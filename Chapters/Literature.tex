@@ -4,6 +4,7 @@
 \documentclass[class=report,11pt,crop=false]{standalone}
 \input{../Style/ChapterStyle.tex}
 \input{../FrontMatter/Glossary.tex}
+
 \begin{document}
 \ifstandalone
 \tableofcontents
@@ -14,7 +15,9 @@
     {\emph{---Carl Sagan}}
 \vspace{0.5cm}
 % ----------------------------------------------------
-\lipsum[2-4]
+
+\section{Data transmission and Interface}
+This section investigates different options for transmitting data from a microcontroller. The two obvious options are Bluetooth and Wi-Fi. According to Gaurav and Ninad, Bluetooth is far easier to setup. On the other hand, Wi-Fi has higher data transfer speed for high baud rates  \cite{comparativewifi}. In the context of capturing weight data of birds, there is not a large amount of data being captured; therefore, high data transfer speed is not needed. In light of this, Bluetooth was further investigated.
 
 % ----------------------------------------------------
 \ifstandalone
