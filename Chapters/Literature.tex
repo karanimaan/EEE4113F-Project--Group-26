@@ -11,8 +11,6 @@
 \fi
 % ----------------------------------------------------
 \chapter{Literature Review \label{ch:literature}}
-\epigraph{If you wish to make an apple pie from scratch, you must first invent the universe.}%
-    {\emph{---Carl Sagan}}
 \vspace{0.5cm}
 % ----------------------------------------------------
 
@@ -22,12 +20,15 @@ This section investigates different options for transmitting data from a micropr
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.7\linewidth]{Figures/performance}
-	\caption{Overall Performance of each Protocol}
+	\caption{Overall Performance of each Protocol 			\cite{comparitiveEspnow}}
 	\label{fig:performance}
 \end{figure}
 
-ESP-NOW performs best in range and latency. Bluetooth in power usage. And Wi-Fi in transmission speed. In our context, power usage would be most important. Bluetooth seems to provide sufficient range and speed.
-In addition, Bluetooth is easier to setup than Wi-Fi \cite{comparativewifi}. In the context of capturing weight data of birds, there is not a large amount of data being captured; therefore, high data transfer speed is not needed. In light of this, Bluetooth was further investigated.
+ESP-NOW performs best in range and latency; Bluetooth in power usage; and Wi-Fi in transmission speed. In our context, power usage would be most important. Bluetooth seems to provide sufficient range and speed.
+
+The problem with this; however, is that connecting the system to the user's phone requires effort and perhaps expertise that the user may not have. In this case, connecting the system to the internet may be a better option (if internet connection is available, i.e. if eduroam is in range). 
+
+Budoyo and Andriana used the internet when designing a prototype of a digital scale to measure the weight of onions. \cite{iot}. They interfaced the microcontroller (an  ATMega2560) to the internet using an ESP8266 Wi-Fi module. The weight data is sent to a website where it is stored in a database.
 
 % ----------------------------------------------------
 \ifstandalone
