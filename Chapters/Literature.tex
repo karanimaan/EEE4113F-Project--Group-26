@@ -18,7 +18,7 @@
 
 \section{Data Transmission and User Interface}
 The client requires the weight data to be retrieved remotely. We need to figure out two things: where do we want the data to be sent, and how do we want it to be sent.
-This section investigates different options for transmitting data from a microprocessor. In a comparative performance study by Eridani et al., three protocols were compared: Bluetooth, Wi-Fi direct, and ESP-NOW ("a new protocol that allows multiple devices to communicate with each other without the use of Wi-Fi, with low power consumption" \cite{comparitiveEspnow}). 5 metrics were used in the tests: maximum range, transmission speed, latency, power usage, and signal resistance to obstructions \cite{comparitiveEspnow}. A brief summary of the performance of each protocol is shown in the below figure.
+This section investigates different options for transmitting data from a microprocessor. In a comparative performance study by Eridani et al., three protocols were compared: Bluetooth, Wi-Fi direct, and ESP-NOW ("a new protocol that allows multiple devices to communicate with each other without the use of Wi-Fi, with low power consumption" \cite{comparitiveEspnow}). 5 metrics were used in the tests: maximum range, transmission speed, latency, power usage, and signal resistance to obstructions \cite{comparitiveEspnow}. A brief summary of the performance of each protocol is shown below in Figure \ref{fig:performance}.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.7\linewidth]{Figures/performance}
@@ -26,7 +26,8 @@ This section investigates different options for transmitting data from a micropr
 	\label{fig:performance}
 \end{figure}
 
-According to Gaurav and Ninad, Bluetooth is far easier to setup than Wi-Fi. On the other hand, Wi-Fi has higher data transfer speed for high baud rates  \cite{comparativewifi}. In the context of capturing weight data of birds, there is not a large amount of data being captured; therefore, high data transfer speed is not needed. In light of this, Bluetooth was further investigated.
+ESP-NOW performs best in range and latency. Bluetooth in power usage. And Wi-Fi in transmission speed. In our context, power usage would be most important. Bluetooth seems to provide sufficient range and speed.
+In addition, Bluetooth is easier to setup than Wi-Fi \cite{comparativewifi}. In the context of capturing weight data of birds, there is not a large amount of data being captured; therefore, high data transfer speed is not needed. In light of this, Bluetooth was further investigated.
 
 % ----------------------------------------------------
 \ifstandalone
