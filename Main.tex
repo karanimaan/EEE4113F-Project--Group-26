@@ -2,26 +2,32 @@
 \input{Style/ChapterStyle.tex}
 \usepackage{standalone} % Best loaded last in the preamble
 
+\input{FrontMatter/Glossary.tex}
 
 \begin{document}
-
-\pagenumbering{roman}
-\input{FrontMatter/Title.tex}
-\input{FrontMatter/Declaration.tex}
-\glsresetall
-
-\tableofcontents
-\listoffigures
-
-\pagenumbering{arabic}
-
-\input{Chapters/Problem.tex}
-\input{Chapters/Literature.tex}
-
-\newpage
-\bibliography{Bibliography/References.bib}
-
-%\appendix
-%\input{Appendices/Appendix_1.tex}
-
+	
+	\pagenumbering{roman}
+	\input{FrontMatter/Title.tex}
+	\input{FrontMatter/Declaration.tex}
+	\glsresetall
+	
+	\tableofcontents
+	\listoffigures
+	
+	\printnoidxglossary[type=\acronymtype,nonumberlist,title={Abbreviations}]
+	\newpage
+	
+	\pagenumbering{arabic}
+	
+	\input{Chapters/Introduction.tex}
+	\input{Chapters/Literature.tex}
+	\input{Chapters/Conclusions.tex}
+	\input{Chapters/Recommendations.tex}
+	
+	\newpage
+	\bibliography{Bibliography/References.bib}
+	
+	%\appendix
+	%\input{Appendices/Appendix_1.tex}
+	
 \end{document}
