@@ -10,9 +10,147 @@
 	\vspace{0.5cm}
 	% ----------------------------------------------------
 	\section{Introduction}
+	The aim of this subsystem is to translate the force from the bird's weight on the scale into a digital reading. It involves designing and constructing the circuitry needed to change the weight into a analogue voltage, developing the algorithms in the micro-controller unit (MCU) used to process this signal and change it into a weight reading of the bird. Another component to this subsystem is to have accurate timekeeping so the weight data is timestamped. 
 	
+	\section{Design Process}
+	\subsection{Weight Sensor}
+	The user, and corresponding, functional requirements  for the weight sensor are shown in Table \ref{table:S1} below.
 	
+	\begin{table}[h!]
+		\centering
+		\caption{Table on the Weight Sensor Requirements.}
+		\begin{tabularx}{0.8\textwidth} { 
+				| >{\centering\arraybackslash}X 
+				| >{\centering\arraybackslash}X 
+				| >{\centering\arraybackslash}X |}
+			\hline
+			\textbf{User Requirement} & \textbf{Functional Requirement} & \textbf{Requirement No.} \\
+			\hline
+			\multirow{2}{\hsize}{The scale must measure weights of up to 500g}  & The sensor must have a maximum capacity greater than 750g  & WR1  \\
+			\cline{2-3}
+			& The sensor must output a voltage proportional to the weight force applied up to a weight of 500g & WR2 \\
+			\hline
+		\end{tabularx}
+		\label{table:S1}
+	\end{table}
 	
+	A strain gauge is an electrical component whose resistance changes when a force is applied to it. Strain gauges work on the principle that when the resistance of a conductor is proportional to its length, as shown in the equation below. 
+	\[R = \rho \frac{L}{A}\]
+	One solution for meeting requirement WR2 is to put a strain gauge in series with another resistance, then place the strain gauge on a beam. When the beam deflects under the bird’s weight, the change in voltage across the strain gauge can be measured. The issue with this setup is that the change in resistance, and thus the subsequent change in voltage, will be very small. This means a very high resolution ADC will be required to resolve these small changes in voltage. The resolution required could be reduced by amplifying the signal, however this would also amplify the DC offset introduced by the voltage divider, quickly saturating the output.
+	
+	A better solution is a load cell which has 4 strain gauges in a Wheatstone configuration. This means that when the load cell has no load on it, the voltage will be zero, and when the device deflects, there will be a slight voltage difference between it’s 2 output terminals. As discussed above, this output can be sent through an amplifier thus reducing the resolution required for the ADC. To meet requirement WR2, a 1kg load cell should be used. 
+	
+	The specifications for HKG 1kg load cell that will be used is shown in Table \ref{table:S2} below.
+
+	\begin{table}[h!]
+		\centering
+		\caption{Table on load cell specifications}
+		\begin{tabularx}{0.8\textwidth} { 
+				| >{\centering\arraybackslash}X 
+				| >{\centering\arraybackslash}X |}
+			\hline
+			Rated Load & 1kg \\
+			\hline
+			Rated Output & 1.0m ± 0.15mV/V \\
+			\hline
+			Zero Output & ±0.1mV/V \\
+			\hline
+			Input Impedance & 1115 ± 10$\Omega$ \\
+			\hline
+			Output Impedance & 1000 ± 10$\Omega$ \\
+			\hline
+		\end{tabularx}
+		\label{table:S2}
+	\end{table}
+	
+	At the rated load the output will be $0.001V_{cc}$, hence the amplifier needs a gain of 1000. 
+	
+	\subsection{Sensor Amplifier}
+	From Table \ref{table:S2}, the output impedance of the load cell is quite significant, meaning there will need to be an input buffer between it and the amplifier to avoid loading. The instrumentation amplifier is thus ideal circuit for achieving this and it is shown in Figure \ref{fig:S1} below.
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.9\linewidth]{Figures/Amplifier.png}
+		\caption{Circuit Schematic of Instrumentation Amplifier}
+		\label{fig:S1}
+	\end{figure}
+	
+	The circuit has three stages. The first stage has two input buffers which also amplify the input signal. The second is a differential amplifier which is a circuit whose output is proportional to the difference between the two inputs. The final stage is a low pass filter. The final output voltage is related to the input voltage by the expression below.
+	\[V_{out} = (V_2 - V_1) \left(1 + \frac{2(R_2+R_3)}{R_1}\right) \left(\frac{R_9}{R_6}\right) \]
+	From the expression above, when the load cell is connected to the two input terminals, its output will be amplified by a factor of 994, which is close to the gain required. 
+	The amplifier have such a large gain presents two issues.
+	
+	The first is that real op-amps have an input offset voltage. As the offsets from the input stage propagate through the circuit, they are amplified resulting in the output having a large bias and saturating for very small weights, hence the op-amps used were the TL071P. These are JFET op-amps meaning they have a very low input offset voltage, in this case, of 1mV. This is still large in comparison to the input, but they also come with two NULL pins which allows the input offset to be adjusted, and thus reduced to 0. The is the purpose of potentiometer RV1 in Figure \ref{fig:S1}.
+	
+	The second is that noise from the input will also be amplified as it propagates through circuit, making the final output difficult to measure. The low pass filter in the final stage addresses this. Since output is a DC voltage, ideally the cutoff frequency should be as low as possible to attenuate the most amount of noise, but this would have a negative impact on the rise time. A lower cutoff frequency would also require larger capacitors. The sample rate for final system will be 10Hz (discussed later). This equates to a period of 0.1s and ideally the output should settle within half that time. It takes 5 time constants for the output to settle to 99\% of its final value. This means that $5RC = 0.05s$ or $RC = 0.01s$. If a 100k$\Omega$ resistor is used then the capacitor would need 100nF. The filter also needs a steep roll-off to ensure a clean output, so a second stage can be added at the input, to make it a second order filter. The input stage of this filter needs to have much lower impedance than output stage to avoid loading, which would resulting in the filter having a larger cutoff frequency than was calculated. This could be avoided using an op-amp but another op-amp would just to the power consumption and cost of the circuit unnecessarily. Using a 10k$\Omega$ resistor, the capacitor needed would be 1uF. The equates to a cutoff frequency of 16Hz. It is difficult to know the exact rise time for higher order filters from calculation alone, as such, this filter was simulated in LTSpice. The circuit diagram is shown in Figure \ref{fig:S2} below.
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.5\linewidth]{Figures/Filter.png}
+		\caption{Circuit Schematic of Low Pass Filter}
+		\label{fig:S2}
+	\end{figure}
+	
+	The input was set to a 1$V_{pp}$ square wave with a frequency of 20Hz. Figure \ref{fig:S3} below shows the input and output of the circuit.
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.9\linewidth]{Figures/Filter Waveform.png}
+		\caption{Input and Output Waveform of Filter}
+		\label{fig:S3}
+	\end{figure}
+	
+	From the waveform above it can be seen that the rise time is too large, as the output (in green) is barely settling in time for the next half-cycle. This can be rectified by halving the size of the capacitors to 470nF and 47nF, as seen in Figure \ref{fig:S1}. The new output is shown in Figure \ref{fig:S4} below.
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.9\linewidth]{Figures/Filter Waveform2.png}
+		\caption{Input and Output Waveform of the Final Filter}
+		\label{fig:S4}
+	\end{figure}
+	As seen above, the filter now meets the speed requirements.
+	
+	Since the instrumentation amplifier has op-amps, it needs 2 rail voltages, a positive and a negative. Unfortunately there is only a single supply, however this supply can be split in two with a simple op-amp circuit, as shown in Figure \ref{fig:S5} below.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.6\linewidth]{Figures/Split Supply.png}
+		\caption{Schematic of Split Supply Circuit}
+		\label{fig:S5}
+	\end{figure}
+	
+	If the new reference point is made to be "Virtual GND", then two rail voltages equal to $\pm \frac{V_{cc}}{2}$ are obtained. This does mean that output of the amplifier will have an offset of $\frac{V_{cc}}{2}$, but this can be stepped down using a voltage divider as to not damage the input to the micro-controller. In testing, a 5V supply was initially used but this resulted in the op-amps saturating. Any voltage above 6V seemed to work thus in the end a 6.6V supply was chosen. This will be the supply voltage required from the Power Subsystem.
+	
+	\subsection{Microcontroller Unit (MCU)}
+		
+	\subsection{Real Time Clock (RTC)}
+	The user, and corresponding, functional requirements  for the real time clock are shown in Table \ref{table:S2} below.
+	
+	\begin{table}[h!]
+		\centering
+		\caption{Table on the RTC Requirements.}
+		\begin{tabularx}{0.8\textwidth} { 
+				| >{\centering\arraybackslash}X 
+				| >{\centering\arraybackslash}X 
+				| >{\centering\arraybackslash}X |}
+			\hline
+			\textbf{User Requirement} & \textbf{Functional Requirement} & \textbf{Requirement No.} \\
+			\hline
+			\multirow{2}{\hsize}{Weight measurements must be timestamped.}  & Must have a real time clock that keeps track of the current time. & WR3 \\
+			\cline{2-3}
+			& The real time clock must continue to keep time when power from the MCU is lost & WR4 \\
+			\hline
+		\end{tabularx}
+		\label{table:S2}
+	\end{table}
+	
+	Most MCU's, including the Arduino Nano 33 IoT, do not have a an real time clock. This means for keeping an accurate track of time an external module is required. The module that will be used is the DS3231 for it’s a high precision and being battery powered. 
+	During testing an issue was found in the module that the supply, $V_{cc}$, was connected directly to the battery. The idea is that the battery should be rechargeable. The only rechargeable battery at this size is the LIR2032 however that cell outputs 3.6V as opposed to the 3.0V of CR2032 coin cell. Since the DS3231 is being powered by a 3.3V supply, the LIR2032 would not charge anyways, as such the CR2032 was used but was disconnected from Vcc. This is disadvantageous since the battery is single use but it has a capacity that lasts 10 years so it is not that much of an issue. The connections for the DS3231 are shown in Figure \ref{fig:S6} below.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.4\linewidth]{Figures/RTC.png}
+		\caption{Circuit Schematic of the RTC}
+		\label{fig:S6}
+	\end{figure}
 	% ----------------------------------------------------
 	\ifstandalone
 	\bibliography{../Bibliography/References.bib}
