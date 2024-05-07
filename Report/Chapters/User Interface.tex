@@ -1,0 +1,51 @@
+% ----------------------------------------------------
+% Recommendations
+% ----------------------------------------------------
+\documentclass[class=report,11pt,crop=false]{standalone}
+\input{../Style/ChapterStyle.tex}
+\input{../FrontMatter/Glossary.tex}
+
+\begin{document}
+	% ----------------------------------------------------
+	\chapter{User Interface \label{ch:user-interface}}
+	
+	\vspace{0.5cm}
+	% ----------------------------------------------------
+	
+	\section{Introduction}
+	
+	\section{Design Process}
+		\subsection{User Requirements}
+		\begin{enumerate}
+			\item Display weight data on app.
+			\item App must have interface for manual data.
+			\item Other data should be automated (time, location).
+			\item Data must be saved to Excel spreadsheet (and stored on cloud).
+			
+		\end{enumerate}
+		
+		\subsection{Functional Requirements}
+			\item Establish connection between smart scale (Arduino) and phone (via Bluetooth or Wi-Fi)
+			
+		
+		\subsection{Acceptance Test Procedures}
+	
+	\section{Design Process}
+		
+		\begin{figure}
+			\includegraphics{Starling data block diagram.drawio.svg}
+		\end{figure}
+	
+	\section{Final Design}
+	
+	\section{Testing}
+	
+	\section{Conclusion}
+	
+	% ----------------------------------------------------
+	\ifstandalone
+	\bibliography{../Bibliography/References.bib}
+	\printnoidxglossary[type=\acronymtype,nonumberlist]
+	\fi
+\end{document}
+% ----------------------------------------------------
