@@ -46,8 +46,18 @@ There are many communication protocols for transmitting data from a microprocess
 	\label{fig:performance}
 \end{figure}
 
-ESP-NOW performs best in range and latency; Bluetooth in power usage; and Wi-Fi in transmission speed. Since the scale must be portable, it is important to keep power usage to a minimum. Bluetooth seems to provide sufficient range and speed.
-The problem with this; however, is that connecting the system to the user's phone requires effort, and perhaps expertise that the user may not have. In this case, connecting the system to the internet may be a better option (that is if an internet connection is available, i.e. if \textit{eduroam} is in range). 
+ESP-NOW performs best in range and latency; Bluetooth in power usage; and Wi-Fi in transmission speed. Since the scale must be portable, it is important to keep power usage to a minimum. 
+A more quantitative graph of power usage of each technology is shown below in figure \ref{fig:power-usage}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.7]{"Figures/Power usage"}
+	\caption{Power Usage Graph}
+	\label{fig:power-usage}
+\end{figure}
+
+Bluetooth has the best power efficiency and seems to provide sufficient range and speed.
+However, connecting the system to the user's phone requires effort on the user end, and perhaps expertise that the user may not have. In this case, connecting the system to the internet may be a better option (that is if an internet connection is available, i.e. if \textit{eduroam} is in range). 
 
 Budoyo and Andriana used the internet when designing a prototype of a digital scale to measure the weight of onions. \cite{iot}. They interfaced the microcontroller (an  ATMega2560) to the internet using an ESP8266 Wi-Fi module. The weight data is sent to a website where it is stored in a database. A database is useful in creating an Excel spreadsheet with many fields which is the end product that the client requires.
 
