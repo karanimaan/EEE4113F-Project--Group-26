@@ -42,13 +42,26 @@
 		
 		\begin{figure}[h!]
 			\centering
-			\includegraphics[width=0.9\linewidth]{Figures/Starling data block diagram.drawio.pdf}
+			\includegraphics[width=0.9\linewidth]{Figures/Starling data block diagram.pdf}
 			\caption{Block diagram of subsystem}
 		\end{figure}
 		
 		This subsystem exists in two environments: the Arduino, and the mobile device. The Arduino needs to be programmed to send the weight readings to the mobile device. A mobile app needs to be developed to receive the weight readings. The app needs to provide a GUI that allows the user to input the bird's ID. The app should save the data to a spreadsheet for the user to view.
 		
 		\subsection{Sending readings}
+		There are several technologies to transmit data such as: Wi-Fi, Bluetooth, and ESP-NOW. 
+		As discussed in the Literature Review, Bluetooth is ideal because it is the power efficient and its speed is sufficient because only several bytes of data (for the weight) are being transmitted.
+		It was also discussed that internet has the advantage of ease of use for the user. However, internet access is not feasible as weighing sessions span outside of \textit{eduroam} coverage.
+		There are two types of Bluetooth: Bluetooth Classic and Bluetooth Low Energy (BLE). BLE is a newer technology that is even more power efficient than Bluetooth Classic; therefore, Bluetooth Low Energy was chosen.
+		
+		BLE works differently to Bluetooth Classic. Bluetooth Classic is based on an asynchronous serial connection. BLE, on the other hand, works like a community bulletin board \cite{ble}. The peripheral device posts data for central devices to read \cite{ble}.This model is shown below in figure \ref{fig:ble-bulletin-board-model}.
+		
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=0.7]{Figures/ble-bulletin-board-model}
+			\caption{BLE Bulletin Board Model \cite{ble}}
+			\label{fig:ble-bulletin-board-model}
+		\end{figure}
 		
 		%\subsection{Receiving readings}
 		
@@ -77,6 +90,10 @@
 		
 	
 	\section{Implementation}
+	
+		\subsection{Arduino}
+		A program was developed and uploaded to the Arduino. This program, \href{https://github.com/karanimaan/EEE4113F-Project--Group-26/blob/main/send_data/send_data.ino}{send\_data.ino}, can be found under the \textit{send\_data} folder in the project repository.
+	
 		\subsection{Mobile app}
 		The mobile app was developed using Android Studio IDE was used with the Kotlin programming language. The app is targeted for Android devices. 
 	
