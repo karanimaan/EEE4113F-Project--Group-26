@@ -1,23 +1,17 @@
 #include <ArduinoBLE.h>           // Bluetooth Library
 
 
-// Initalizing global variables for sensor data to pass onto BLE
-String p, t, m;
 
 // BLE Service Name
 BLEService customService("180C");
 
 // BLE Characteristics
 // Syntax: BLE<DATATYPE>Characteristic <NAME>(<UUID>, <PROPERTIES>, <DATA LENGTH>)
-BLEStringCharacteristic ble_pressure("2A56", BLERead | BLENotify, 13);
+BLEStringCharacteristic ble_weight("2A56", BLERead | BLENotify, 13);
 
-// Function prototype
-void readValues();
 
 void setup()
 {
-    // Initalizing all the sensors
-
     Serial.begin(9600);
     while (!Serial);
     if (!BLE.begin())
@@ -34,7 +28,7 @@ void setup()
     BLE.setAdvertisedService(customService);
     
     // Adding characteristics to BLE Service Advertisment
-    customService.addCharacteristic(ble_pressure);
+    customService.addCharacteristic(ble_weight);
 
     // Adding the service to the BLE stack
     BLE.addService(customService);
@@ -56,19 +50,13 @@ void loop()
         {
             delay(200);
             
-            // Read values from sensors
             float weight = 346.2;
             char weight_str[10];
             sprintf(weight_str, "%.1f", weight);
             // Writing sensor values to the characteristic
-            ble_pressure.writeValue(weight_str);
+            ble_weight.writeValue(weight_str);
+            printf("%.1f", weight);
 
-
-
-            // Displaying the sensor values on the Serial Monitor
-            Serial.println("Reading Sensors");
-
-            Serial.println("\n");
             delay(1000);
         }
     }
