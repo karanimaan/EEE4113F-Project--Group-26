@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -53,10 +54,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    var reading by remember { mutableStateOf(0.0) }
-                    var weight by remember { mutableStateOf(0.0) }
+                    var reading by remember { mutableFloatStateOf(0f) }
+                    var weight by remember { mutableFloatStateOf(0f) }
 
-                    reading = (100..160).random().toDouble()
+                    reading = (100..160).random().toFloat()
 
                     Column(modifier = Modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                         Row { Text("Live reading:   ${reading} g")}
@@ -72,20 +73,8 @@ class MainActivity : ComponentActivity() {
                             label = { Text("Bird ID") }
                         )
 
-//        data class WeightRecord
-//
-//        val weightRecords = MutableList<>()
+                        var dataLines by remember { mutableStateOf("") }
 
-
-                        fun saveData(text: String) {
-//            val path = assets.
-                            val filename = "weight records (filesDir).csv"
-                            val file = File(applicationContext.filesDir, filename)
-                            file.appendText("\n$text")
-//                            file.appendText("\n$text" + "\n------------------")
-                            val data = file.readText()
-//                            android.widget.Toast.makeText(applicationContext, "$data")
-                        }
 
                         fun readData(): String {
                             val filename = "weight records (filesDir).csv"
@@ -93,9 +82,7 @@ class MainActivity : ComponentActivity() {
                             return file.readText()
                         }
 
-                        var dataLines by remember { mutableStateOf("") }
-
-                        Button(onClick = {
+                        fun saveData() {
                             val data = readData()
                             val lastLine = data.split("\n").last()
                             var lastFID = -1
@@ -110,9 +97,26 @@ class MainActivity : ComponentActivity() {
                             val time = current.format(DateTimeFormatter.ofPattern("HH:mm:ss"))
                             val ringType = "Colour"
                             val sex = "Male"
-                            saveData(listOf(FID, date, time, birdID, ringType, sex, weight).joinToString(separator = ", "))
-                            //saveData("FID, Date, Time, ID, Ring type, Sex, Mass")
+                            val text = listOf(FID, date, time, birdID, ringType, sex, weight).joinToString(separator = ", ")
+                            val filename = "weight records (filesDir).csv"
+                            val file = File(applicationContext.filesDir, filename)
+                            file.appendText("\n$text")
                             dataLines = readData()
+                        }
+
+                        fun clearData() {
+                            val filename = "weight records (filesDir).csv"
+                            val file = File(applicationContext.filesDir, filename)
+                            file.writeText("FID, Date, Time, Bird ID, Mass")
+                            dataLines = readData()
+                        }
+
+
+
+
+                        // Save data button
+                        Button(onClick = {
+                            saveData()
                         }) {
                             Text(text = "Save data")
                         }
@@ -139,17 +143,17 @@ class MainActivity : ComponentActivity() {
 
                             try {
                                 val externalFilesDir = getExternalFilesDir(null)
-                                val path = File(externalFilesDir, "Cyber")
-                                if (! path.exists()) {
-                                    val res = path.mkdirs()
-                                    //Toast.makeText(applicationContext, "${path.path} doesn't exist", Toast.LENGTH_SHORT).show()
-
-                                }
+//                                val path = File(externalFilesDir, "Cyber")
+//                                if (! path.exists()) {
+//                                    val res = path.mkdirs()
+//                                    //Toast.makeText(applicationContext, "${path.path} doesn't exist", Toast.LENGTH_SHORT).show()
+//
+//                                }
 
                                 val filename = "exported_data.csv"
 
-                                val file = File(path, filename)
-                                exportedFilePath = file.path.split("0/")[1]
+                                val file = File(externalFilesDir, filename)
+                                exportedFilePath = file.path.split("/0")[1]
                                 file.writeText(data)
 
                                 val fileSize = file.length()
@@ -206,13 +210,8 @@ class MainActivity : ComponentActivity() {
 
                         Text(text = dataLines)
 
-                        //Clear data
-                        Button(onClick = {
-                            val filename = "weight records (filesDir).csv"
-                            val file = File(applicationContext.filesDir, filename)
-                            file.writeText("FID, Date, Time, ID, Ring type, Sex, Mass")
-                            dataLines = readData()
-                        }) {
+                        //Clear data button
+                        Button(onClick = {clearData()}) {
                             Text("Clear Data")
                         }
 
