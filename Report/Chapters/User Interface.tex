@@ -13,37 +13,84 @@
 	% ----------------------------------------------------
 	
 	\section{Introduction}
+	This chapter deals with the user interface of the system. The user interface is how the client will be able to make use of the system.
 	
-	\section{Design Process}
+	\section{Requirements}
+	
 		\subsection{User Requirements}
 		\begin{enumerate}
 			\item Display weight data on app.
 			\item App must have interface for manual data.
 			\item Other data should be automated (time, location).
-			\item Data must be saved to Excel spreadsheet (and stored on cloud).
+			\item Data must be saved to a spreadsheet. It should have the following fields: FID, Date, Time, ID, Ring type, Sex, Mass, Day status, Day status, Day, Weekday, Term, Name, Weight Session, Location, Notes, People Count 1, People Count 2.
 			
 		\end{enumerate}
 		
 		\subsection{Functional Requirements}
 		\begin{enumerate}
 			\item Establish connection between smart scale (Arduino) and phone (via Bluetooth or Wi-Fi) 
+			\item The GUI should have a text box to input the bird's ID.
+			\item A CSV file needs to be created where the data will be written.
 		\end{enumerate}
 			
 			
 		
-		\subsection{Acceptance Test Procedures}
+	
+		
 	
 	\section{Design Process}
 		
-		\begin{figure}[h]
+		\begin{figure}[h!]
 			\centering
 			\includegraphics[width=0.9\linewidth]{Figures/Starling data block diagram.drawio.pdf}
 			\caption{Block diagram of subsystem}
 		\end{figure}
+		
+		This subsystem exists in two environments: the Arduino, and the mobile device. The Arduino needs to be programmed to send the weight readings to the mobile device. A mobile app needs to be developed to receive the weight readings. The app needs to provide a GUI that allows the user to input the bird's ID. The app should save the data to a spreadsheet for the user to view.
+		
+		\subsection{Sending readings}
+		
+		%\subsection{Receiving readings}
+		
+		\subsection{Graphical User Interface}
+		The Graphical User Interface (GUI) is responsible for displaying the live reading coming from the Arduino, and allowing the user to capture that reading and input the bird ID. The GUI also needs a save button to save the data to a file, so that the user can view the data in a spreadsheet.
+		The prototype of the GUI is shown below in figure \ref{fig:gui-prototype}.
+				
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=1]{"Figures/GUI prototype"}
+			\caption{GUI prototype}
+			\label{fig:gui-prototype}
+		\end{figure}
+		
+		\subsection{Saving data}
+		
+		
+		The spreadsheet should have the following fields: FID, Date, Time, ID, Ring type, Sex, Mass, Day status, Day status, Day (of week), Weekday, Term, Name, Weighing Session, Location, Notes, People Count 1, People Count 2.
+		
+		FID - pk
+		Date, Time, Day, Weekday, Weighing Session, Location - Kotlin
+		ID, Day status, Name, Notes, People Count 1, People Count 2 - user
+		Ring type, Sex - BirdID table
+		Mass - Arduino
+		Term - Terms table
+		
 	
-	\section{Final Design}
+	\section{Implementation}
+		\subsection{Mobile app}
+		The mobile app was developed using Android Studio IDE was used with the Kotlin programming language. The app is targeted for Android devices. 
 	
-	\section{Testing}
+		
+	
+	%\section{Final Design}
+	
+	%\section{Testing}
+	\section{Acceptance Test Procedure}
+	Testing was done on a Samsung S9 phone running Android 10.
+	\subsection{Unit Testing}
+
+	
+	\subsection{User Acceptance Testing}
 	
 	\section{Conclusion}
 	
