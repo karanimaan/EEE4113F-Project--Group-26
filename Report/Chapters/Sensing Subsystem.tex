@@ -17,38 +17,35 @@
 		\centering
 		\caption{Non-functional Specifications of the Sensing Subsystem}
 		\label{tab:S1}
-		\resizebox{\textwidth}{!}{%
-			\begin{tabular}{lllll}
-				\cline{1-3}
-				\multicolumn{1}{|l|}{\textbf{User Requirement}} & \multicolumn{1}{l|}{\textbf{Specification Description}}                                     & \multicolumn{1}{l|}{\textbf{Specification  no.}} &  &  \\ \cline{1-3}
-				\multicolumn{1}{|l|}{Portable}                  & \multicolumn{1}{l|}{The final circuitry must be able to fit in a box that is 100x100x50mm.} & \multicolumn{1}{l|}{SS1}                         &  &  \\ \cline{1-3}
-				\multicolumn{1}{|l|}{Long battery life}         & \multicolumn{1}{l|}{The final circuitry should consume less than 30mA.}                     & \multicolumn{1}{l|}{SS2}                         &  &  \\ \cline{1-3}
-				&                                                                                             &                                                  &  &  \\
-				&                                                                                             &                                                  &  &  \\
-				&                                                                                             &                                                  &  &  \\
-				&                                                                                             &                                                  &  &  \\
-				&                                                                                             &                                                  &  & 
-			\end{tabular}%
-		}
+			\begin{tabularx}{0.8\textwidth}{ 
+					| >{\centering\arraybackslash}X 
+					| >{\centering\arraybackslash}X 
+					| >{\centering\arraybackslash}X |}
+			\hline
+			\textbf{User   Requirement} & \textbf{Specification   Description}                                     & \textbf{Specification   no.} \\ \hline
+			Portable                    & The final   circuitry must be able to fit in a box that is 100x100x50mm. & SS1                          \\ \hline
+			Long battery   life         & The final   circuitry should consume less than 30mA.                     & SS2                          \\ \hline
+			\end{tabularx}
 	\end{table}
 	
 	\begin{table}[h!]
 		\centering
 		\caption{Functional Specifications for Sensing Subsystem}
 		\label{tab:S2}
-		\resizebox{\columnwidth}{!}{%
-			\begin{tabular}{|l|l|l|}
+			\begin{tabularx}{0.8\textwidth}{ 
+					| >{\centering\arraybackslash}X 
+					| >{\centering\arraybackslash}X 
+					| >{\centering\arraybackslash}X |}
 				\hline
 				\textbf{User Requirement}                                      & \textbf{Specification   Description}                                                                                                           & \textbf{Specification   no.} \\ \hline
-				\multirow{2}{*}{The scale must measure weights of up to 500g.} & The weight sensor must have a maximum capacity greater than 750g (1.5 times safety factor).                                                    & SS3                          \\ \cline{2-3} 
+				\multirow{2}{0.25\textwidth}{The scale must measure weights of up to 500g.} & The weight sensor must have a maximum capacity greater than 750g (1.5 times safety factor).                                                    & SS3                          \\ \cline{2-3} 
 				& The sensor and amplifier must output a voltage proportional to the weight force applied up   to a weight of 500g.                              & SS4                          \\ \hline
-				\multirow{2}{*}{The scale measure weight accurate to 0.1g.}    & The ADC must be able to resolve voltage changes from weight changes that are less than 0.1g.                                                   & SS5                          \\ \cline{2-3} 
+				\multirow{2}{0.25\textwidth}{The scale measure weight accurate to 0.1g.}    & The ADC must be able to resolve voltage changes from weight changes that are less than 0.1g.                                                   & SS5                          \\ \cline{2-3} 
 				& The ADC must have a gain and offset error less than a voltage change resulting from a change   in weight of 0.1g.                              & SS6                          \\ \hline
-				\multirow{3}{*}{The scale must have a tare function.}          & The microcontroller must have a digital input pin to read the users inputs from a   push button.                                               & SS7                          \\ \cline{2-3} 
+				\multirow{3}{0.25\textwidth}{The scale must have a tare function.}          & The microcontroller must have a digital input pin to read the users inputs from a   push button.                                               & SS7                          \\ \cline{2-3} 
 				& The microcontroller must subtract the current weight from all subsequent measurements when the   voltage on the digital pin receives an input. & SS8                          \\ \cline{2-3} 
 				& There must be an LCD screen that outputs the current weight to give the user feedback.                                                         & SS9                          \\ \hline
-			\end{tabular}%
-		}
+			\end{tabularx}
 	\end{table}
 	
 	\section{Design Process}
@@ -59,11 +56,11 @@
 	\subsection{Weight Sensor}
 	A strain gauge is an electrical component whose resistance changes when a force is applied to it. Strain gauges work on the principle that when the resistance of a conductor is proportional to its length, as shown in the equation below. 
 	\[R = \rho \frac{L}{A}\]
-	One solution for meeting requirement WR2 is to put a strain gauge in series with another resistance, then place the strain gauge on a beam. When the beam deflects under the bird’s weight, the change in voltage across the strain gauge can be measured. The issue with this setup is that the change in resistance, and thus the subsequent change in voltage, will be very small. This means a very high resolution ADC will be required to resolve these small changes in voltage. The resolution required could be reduced by amplifying the signal, however this would also amplify the DC offset introduced by the voltage divider, quickly saturating the output.
+	One solution is to put a strain gauge in series with another resistance, then place the strain gauge on a beam. When the beam deflects under the bird’s weight, the change in voltage across the strain gauge can be measured. The issue with this setup is that the change in resistance, and thus the subsequent change in voltage, will be very small. This means a very high resolution ADC will be required to resolve these small changes in voltage. The resolution required could be reduced by amplifying the signal, however this would also amplify the DC offset introduced by the voltage divider, quickly saturating the output.
 	
-	A better solution is a load cell which has 4 strain gauges in a Wheatstone configuration. This means that when the load cell has no load on it, the voltage will be zero, and when the device deflects, there will be a slight voltage difference between it’s 2 output terminals. As discussed above, this output can be sent through an amplifier thus reducing the resolution required for the ADC. To meet requirement WR2, a 1kg load cell should be used. 
+	A better solution is a load cell which has 4 strain gauges in a Wheatstone configuration. This means that when the load cell has no load on it, the voltage will be zero, and when the device deflects, there will be a slight voltage difference between it’s 2 output terminals. As discussed above, this output can be sent through an amplifier thus reducing the resolution required for the ADC. To meet the sensor specifications, a 1kg load cell will be used. 
 	
-	The specifications for HKG 1kg load cell that will be used is shown in Table \ref{table:S3} below.
+	The specifications for one such load cell by HKD is shown in Table \ref{tab:S3} below.
 
 	\begin{table}[h!]
 		\centering
@@ -83,13 +80,13 @@
 			Output Impedance & 1000 ± 10$\Omega$ \\
 			\hline
 		\end{tabularx}
-		\label{table:S3}
+		\label{tab:S3}
 	\end{table}
 	
-	At the rated load the output will be $0.001V_{cc}$, hence the amplifier needs a gain of 1000. 
+	At the rated load, the output will be $0.001V_{cc}$, hence the amplifier needs a gain of 1000. 
 	
 	\subsection{Sensor Amplifier}
-	From Table \ref{table:S3}, the output impedance of the load cell is quite significant, meaning there will need to be an input buffer between it and the amplifier to avoid loading. The instrumentation amplifier is thus ideal circuit for achieving this and it is shown in Figure \ref{fig:S1} below.
+	From Table \ref{tab:S3}, the output impedance of the load cell is quite significant, meaning there will need to be an input buffer between it and the amplifier to avoid loading. The instrumentation amplifier is thus ideal circuit for achieving this and it is shown in Figure \ref{fig:S1} below.
 	
 	\begin{figure}[h!]
 		\centering
@@ -105,7 +102,7 @@
 	
 	The first is that real op-amps have an input offset voltage. As the offsets from the input stage propagate through the circuit, they are amplified resulting in the output having a large bias and saturating for very small weights, hence the op-amps used were the TL071P. These are JFET op-amps meaning they have a very low input offset voltage, in this case, of 1mV. This is still large in comparison to the input, but they also come with two NULL pins which allows the input offset to be adjusted, and thus reduced to 0. The is the purpose of potentiometer RV1 in Figure \ref{fig:S1}. Another reason for choosing TL071P is that their minimum recommended supply voltage is 4.5V which means unlike other JFET op-amps they can operate at lower supply voltages. This advantageous since the scale will be battery powered so there will not be a large supply.
 	
-	The second is that noise from the input will also be amplified as it propagates through circuit, making the final output difficult to measure. The low pass filter in the final stage addresses this. Since output is a DC voltage, ideally the cutoff frequency should be as low as possible to attenuate the most amount of noise, but this would have a negative impact on the rise time. A lower cutoff frequency would also require larger capacitors. The sample rate for final system will be 10Hz (discussed later). This equates to a period of 0.1s and ideally the output should settle within half that time. It takes 5 time constants for the output to settle to 99\% of its final value. This means that $5RC = 0.05s$ or $RC = 0.01s$. If a 100k$\Omega$ resistor is used then the capacitor would need 100nF. The filter also needs a steep roll-off to ensure a clean output, so a second stage can be added at the input, to make it a second order filter. The input stage of this filter needs to have much lower impedance than output stage to avoid loading, which would resulting in the filter having a larger cutoff frequency than was calculated. This could be avoided using an op-amp but another op-amp would just to the power consumption and cost of the circuit unnecessarily. Using a 10k$\Omega$ resistor, the capacitor needed would be 1uF. The equates to a cutoff frequency of 16Hz. It is difficult to know the exact rise time for higher order filters from calculation alone, as such, this filter was simulated in LTSpice. The circuit diagram is shown in Figure \ref{fig:S2} below.
+	The second is that noise from the input will also be amplified as it propagates through circuit, making the final output difficult to measure. The low pass filter in the final stage addresses this. Since output is a DC voltage, ideally the cutoff frequency should be as low as possible to attenuate the most amount of noise, but this would have a negative impact on the rise time. A lower cutoff frequency would also require larger capacitors. The sample rate for final system will be 10Hz (discussed later). This equates to a period of 0.1s and ideally the output should settle within half that time. It takes 5 time constants for the output to settle to 99\% of its final value. This means that $5RC = 0.05s$ or $RC = 0.01s$. If a 100k$\Omega$ resistor is used then the capacitor would need 100nF. The filter also needs a steep roll-off to ensure a clean output, so a second stage can be added at the input, to make it a second order filter. The input stage of this filter needs to have much lower impedance than output stage to avoid loading, which would resulting in the filter having a larger cutoff frequency than was calculated. Using a 10k$\Omega$ resistor, the capacitor needed would be 1uF. The equates to a cutoff frequency of 16Hz. It is difficult to know the exact rise time for higher order filters from calculation alone, as such, this filter was simulated in LTSpice. The circuit diagram is shown in Figure \ref{fig:S2} below.
 	
 	\begin{figure}[h!]
 		\centering
@@ -136,14 +133,54 @@
 	Since the instrumentation amplifier has op-amps, it needs 2 rail voltages, a positive and a negative. Unfortunately there is only a single supply, however this supply can be split in two with a simple op-amp circuit, as shown in Figure \ref{fig:S5} below.
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[width=0.6\linewidth]{Figures/Split Supply.png}
+		\includegraphics[width=0.5\linewidth]{Figures/Split Supply.png}
 		\caption{Schematic of Split Supply Circuit}
 		\label{fig:S5}
 	\end{figure}
 	
-	If the new reference point is made to be "Virtual GND", then two rail voltages equal to $\pm \frac{V_{cc}}{2}$ are obtained. This does mean that output of the amplifier will have an offset of $\frac{V_{cc}}{2}$, but this can be stepped down using a voltage divider as to not damage the input to the micro-controller. In testing, a 5V supply was initially used but this resulted in the op-amps saturating. Any voltage above 6V seemed to work thus in the end a 6.6V supply was chosen. This will be the supply voltage required from the Power Subsystem.
+	If the new reference point is made to be "Virtual GND", then two rail voltages equal to $\pm \frac{V_{cc}}{2}$ are obtained. This does mean that output of the amplifier will have an offset of $\frac{V_{cc}}{2}$, but this can be stepped down using a voltage divider as to not damage the input to the microcontroller. In testing, a 5V supply was initially used but this resulted in the op-amps saturating. In the early stages of the design process, the amplifier was tested using $\pm3.3V$ and this worked fine so in the end a 6.6V supply was chosen. This will be the supply voltage required from the Power Subsystem. The Arduino Nano 33 IoT has an operating voltage of 3.3V so the voltage divider must have a gain of 0.5.
+	
+	Finally, because the output from the amplifier will no longer go directly to the microcontroller, an op-amp must be included in the low pass filter to buffer the input of the voltage divider. The new active low pass filter will be in a Sallen-Key configuration with $R = 100k\omega$ and $C = 47nF$ as shown in Figure \ref{fig:S1}.
 	
 	\subsection{Analogue to Digital Converter (ADC)}
+	Since the weight force on the load cell is proportional to output voltage out of the load cell, the change in weight is equal to the change voltage as shown in the equation below.
+	\begin{center}
+		$\frac{W_1}{W_2} = \frac{V_1}{V_2}$ \\ 
+	\end{center}
+	By substituting in the rated load, rated output and the minimum weight, the smallest change in the output can be determined.
+	\begin{center}
+		$\frac{0.1g}{1000g} = \frac{V_{min}}{0.5(994(3.3mV))}$ \\
+		$V_{min} = 0.164mV$
+	\end{center}
+	As such, 1 LSB (Least Significant Bit) of ADC must be less than 0.164mV. Since the supply voltage from the Arduino is 3.3V, an ADC with a minimum resolution of 15 bits is required. The Arduino only comes with a 12-bit ADC so an external module will be needed.
+	The module that was chosen is the ADS1115 16 bit ADC its specification for this application are summarized in Table \ref{tab:S4} below.
+		\begin{table}[h!]
+		\centering
+		\caption{Table on ADS1115 specifications}
+		\begin{tabularx}{0.8\textwidth} { 
+				| >{\centering\arraybackslash}X 
+				| >{\centering\arraybackslash}X |
+				| >{\centering\arraybackslash}X |
+				| >{\centering\arraybackslash}X |
+				| >{\centering\arraybackslash}X |}
+			\hline
+			& \textbf{Min} & \textbf{Typical} & \textbf{Max} & \textbf{Unit} \\ \hline
+			\textbf{Supply Voltage} & 2            & -                & 5.5          & V             \\ \hline
+			\textbf{Data Rate}      & 8            & -                & 860          & SPS           \\ \hline
+			\textbf{Offset error}   & -            & $\pm$ 3            & -            & LSB           \\ \hline
+			\textbf{Gain error}     & -            & 0.01             & 0.15         & \%            \\ \hline
+		\end{tabularx}
+		\label{tab:S4}
+	\end{table}
+	
+	From Table \ref{tab:S4}, the offset error is equivalent to 0.151mV which is less than $V_{min}$. The maximum gain error is quite large, translating to an offset of 4.95mV at the last output code. Even under typical conditions the offset will be 0.33mV. However this is not a big issue, as the scale only needs to be accurate over half the range and the gain error can be compensated for in software. The noise performance is also great as at low data rates, not a single bit of resolution is lost to quantization noise. The final reason this module was chosen is that most ADC come standalone in a SIOC package, but this one comes as a development board kit with headers allowing for easy soldering onto a Veroboard. The circuit diagram for this module is shown in Figure \ref{fig:S6} below.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.5\linewidth]{Figures/ADC.png}
+		\caption{Circuit Schematic of the ADS1115}
+		\label{fig:S6}
+	\end{figure}
+	
 	
 	% ----------------------------------------------------
 	\ifstandalone
