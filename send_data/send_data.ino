@@ -1,14 +1,12 @@
 #include <ArduinoBLE.h>           // Bluetooth Library
 
 
-
 // BLE Service Name
 BLEService customService("180C");
 
 // BLE Characteristics
 // Syntax: BLE<DATATYPE>Characteristic <NAME>(<UUID>, <PROPERTIES>, <DATA LENGTH>)
 BLEStringCharacteristic ble_weight("2A56", BLERead | BLENotify, 13);
-
 
 void setup()
 {
@@ -22,7 +20,7 @@ void setup()
     }
 
     // Setting BLE Name
-    BLE.setLocalName("Arduino Environment Sensor");
+    BLE.setLocalName("Arduino Nano 33 IoT");
     
     // Setting BLE Service Advertisment
     BLE.setAdvertisedService(customService);
@@ -50,7 +48,7 @@ void loop()
         {
             delay(200);
             
-            float weight = 346.2;
+            float weight = 346.2; // hardcoded value for unit test
             char weight_str[10];
             sprintf(weight_str, "%.1f", weight);
             // Writing sensor values to the characteristic

@@ -38,7 +38,41 @@
 	
 		
 	
-	\section{Design Process}
+	\section{Design Choices}
+		
+	
+		\subsection{Sending readings}
+		There are several technologies to transmit data such as: Wi-Fi, and Bluetooth. 
+		Wi-Fi has the benefit of conneting to the internet. It requires minimal effort on the user's end if they are already connected to the internet . However, internet access is not feasible as weighing sessions span outside of \textit{eduroam} coverage.
+		Bluetooth is more power effecient, which is important because the scale must be portable. 
+		A comparative graph of power usage from Eridani et al. \cite{comparitiveEspnow} is shown below in figure \ref{fig:power-usage}.
+		
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=0.7]{"Figures/Power usage"}
+			\caption{Power Usage Graph}
+			\label{fig:power-usage}
+		\end{figure}
+		
+		In addition, Bluetooth's speed is sufficient because only several bytes of data are being transmitted at a time.
+		There are two types of Bluetooth: Bluetooth Classic and Bluetooth Low Energy (BLE). BLE is a newer technology that is even more power efficient than Bluetooth Classic; therefore, Bluetooth Low Energy was chosen.
+		
+		
+		%\subsection{Receiving readings}
+		
+		\subsection{Graphical User Interface}
+		A mobile app needed to be developed to receive and record the data. The client uses an Android device; therefore, an the app was developed for Android devices. The official native programming language is Java. Kotlin is a newer language, that Google will be giving more support to than Java, going forward \cite{kotlin}. In addition, Kotlin has more concise and safer code. It has less boilerplate and it has many language features to avoid common programming mistakes, such as null safety \cite{kotlin}.
+		
+		For these reasons Kotlin was chosen since it would mean this program would be easier to maintain for newer Android devices in the future and it would be less error prone.
+		
+		Its UI App Development Toolkit, Jetpack Compose, was used to develop the GUI for the app. This was used instead of XML (Extended Markup Language), since it is more concise than XML, and is officially supported by Google.
+			
+		
+		\subsection{Saving data}
+		The data is required to be viewed in a spreadsheet form. The simplest format that can be read in a spread sheet is the CSV (Comma Separated Values) format. The other common option is the Excel Workbook format for Microsoft Excel. This format is more complicated and unnecessary, since only text values are being saved.
+		
+	
+	\section{Subsystem Design}
 		
 		\begin{figure}[h!]
 			\centering
@@ -48,36 +82,44 @@
 		
 		This subsystem exists in two environments: the Arduino, and the mobile device. The Arduino needs to be programmed to send the weight readings to the mobile device. A mobile app needs to be developed to receive the weight readings. The app needs to provide a GUI that allows the user to input the bird's ID. The app should save the data to a spreadsheet for the user to view.
 		
-		\subsection{Sending readings}
-		There are several technologies to transmit data such as: Wi-Fi, Bluetooth, and ESP-NOW. 
-		As discussed in the Literature Review, Bluetooth is ideal because it is the power efficient and its speed is sufficient because only several bytes of data (for the weight) are being transmitted.
-		It was also discussed that internet has the advantage of ease of use for the user. However, internet access is not feasible as weighing sessions span outside of \textit{eduroam} coverage.
-		There are two types of Bluetooth: Bluetooth Classic and Bluetooth Low Energy (BLE). BLE is a newer technology that is even more power efficient than Bluetooth Classic; therefore, Bluetooth Low Energy was chosen.
+	
+		\subsection{Sending data}
 		
 		BLE works differently to Bluetooth Classic. Bluetooth Classic is based on an asynchronous serial connection. BLE, on the other hand, works like a community bulletin board \cite{ble}. The peripheral device posts data for central devices to read \cite{ble}.This model is shown below in figure \ref{fig:ble-bulletin-board-model}.
 		
 		\begin{figure}[h!]
 			\centering
-			\includegraphics[scale=0.7]{Figures/ble-bulletin-board-model}
+			\includegraphics[scale=0.5]{Figures/ble-bulletin-board-model}
 			\caption{BLE Bulletin Board Model \cite{ble}}
 			\label{fig:ble-bulletin-board-model}
 		\end{figure}
 		
-		%\subsection{Receiving readings}
+		The information presented by the peripheral device is structured as services, which are subdivided into characteristics \cite{ble}. BLE includes a mechanism known as notify. This notifies central devices when the data changes.
 		
-		\subsection{Graphical User Interface}
+		A program was developed and uploaded to the Arduino. This program, \href{https://github.com/karanimaan/EEE4113F-Project--Group-26/blob/main/send_data/send_data.ino}{send\_data.ino}, can be found under the \textit{send\_data} folder in the project repository.
+		Firstly, in the setup function, the BLE name of the device is set to "Arduino Nano 33 IoT".
+		Then, a custom service is advertised and a characteristic is added to the service.
+		In an infinite loop, the program checks if a central device is connected. If there is, then the weight value is converted to a string and written in to the \textit{weight} characteristic. The connected central device would then be able to read the \textit{weight} reading as a string.
+		
+		%\subsection{Reading data}
+		
+		\subsection{Mobile app}
+		
+		
+		https://github.com/karanimaan/EEE4113F-Project--Group-26/tree/main/Mobile%20App
+		
 		The Graphical User Interface (GUI) is responsible for displaying the live reading coming from the Arduino, and allowing the user to capture that reading and input the bird ID. The GUI also needs a save button to save the data to a file, so that the user can view the data in a spreadsheet.
 		The prototype of the GUI is shown below in figure \ref{fig:gui-prototype}.
-				
+		
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale=1]{"Figures/GUI prototype"}
 			\caption{GUI prototype}
 			\label{fig:gui-prototype}
 		\end{figure}
+	
 		
 		\subsection{Saving data}
-		
 		
 		The spreadsheet should have the following fields: FID, Date, Time, ID, Ring type, Sex, Mass, Day status, Day status, Day (of week), Weekday, Term, Name, Weighing Session, Location, Notes, People Count 1, People Count 2.
 		
@@ -89,22 +131,25 @@
 		Term - Terms table
 		
 	
-	\section{Implementation}
-	
-		\subsection{Arduino}
-		A program was developed and uploaded to the Arduino. This program, \href{https://github.com/karanimaan/EEE4113F-Project--Group-26/blob/main/send_data/send_data.ino}{send\_data.ino}, can be found under the \textit{send\_data} folder in the project repository.
-	
-		\subsection{Mobile app}
-		The mobile app was developed using Android Studio IDE was used with the Kotlin programming language. The app is targeted for Android devices. 
-	
-		
-	
 	%\section{Final Design}
 	
 	%\section{Testing}
 	\section{Acceptance Test Procedure}
 	Testing was done on a Samsung S9 phone running Android 10.
-	\subsection{Unit Testing}
+	\section{Unit Testing}
+		
+		\subsection{Sending data}
+		For the purpose of unit testing, the weight value was hard-coded to $346.2$.
+		\textit{LightBlue}, a mobile app, was used to test the Arduino sending data. Screenshots of the process are shown below in figure \ref{fig:screenshots-of-testing-ble-posting}.
+		
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=1.2\linewidth]{"Figures/Screenshots of testing BLE posting"}
+			\caption{Testing the Arduino sending data}
+			\label{fig:screenshots-of-testing-ble-posting}
+		\end{figure}
+	
+		On the homepage, a list of devices is displayed. The device "Arduino Nano 33 IoT" was connected to. The service was selected and the characteristic was read. The data format "UTF-8 String" was selected, and the weight reading was displayed. This reading corresponded with the hard-coded value in \href{https://github.com/karanimaan/EEE4113F-Project--Group-26/blob/main/send_data/send_data.ino}{send\_data.ino}.
 
 	
 	\subsection{User Acceptance Testing}
