@@ -85,41 +85,53 @@
 	
 		\subsection{Sending data}
 		
-		BLE works differently to Bluetooth Classic. Bluetooth Classic is based on an asynchronous serial connection. BLE, on the other hand, works like a community bulletin board \cite{ble}. The peripheral device posts data for central devices to read \cite{ble}.This model is shown below in figure \ref{fig:ble-bulletin-board-model}.
-		
-		\begin{figure}[h!]
-			\centering
-			\includegraphics[scale=0.5]{Figures/ble-bulletin-board-model}
-			\caption{BLE Bulletin Board Model \cite{ble}}
-			\label{fig:ble-bulletin-board-model}
-		\end{figure}
-		
-		The information presented by the peripheral device is structured as services, which are subdivided into characteristics \cite{ble}. BLE includes a mechanism known as notify. This notifies central devices when the data changes.
-		
-		A program was developed and uploaded to the Arduino. This program, \href{https://github.com/karanimaan/EEE4113F-Project--Group-26/blob/main/send_data/send_data.ino}{send\_data.ino}, can be found under the \textit{send\_data} folder in the project repository.
-		Firstly, in the setup function, the BLE name of the device is set to "Arduino Nano 33 IoT".
-		Then, a custom service is advertised and a characteristic is added to the service.
-		In an infinite loop, the program checks if a central device is connected. If there is, then the weight value is converted to a string and written in to the \textit{weight} characteristic. The connected central device would then be able to read the \textit{weight} reading as a string.
-		
+			BLE works differently to Bluetooth Classic. Bluetooth Classic is based on an asynchronous serial connection. BLE, on the other hand, works like a community bulletin board \cite{ble}. The peripheral device posts data for central devices to read \cite{ble}.This model is shown below in figure \ref{fig:ble-bulletin-board-model}.
+			
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[scale=0.5]{Figures/ble-bulletin-board-model}
+				\caption{BLE Bulletin Board Model \cite{ble}}
+				\label{fig:ble-bulletin-board-model}
+			\end{figure}
+			
+			The information presented by the peripheral device is structured as services, which are subdivided into characteristics \cite{ble}. BLE includes a mechanism known as notify. This notifies central devices when the data changes.
+			
+			A program was developed and uploaded to the Arduino. This program, \href{https://github.com/karanimaan/EEE4113F-Project--Group-26/blob/main/send_data/send_data.ino}{send\_data.ino}, can be found under the \textit{send\_data} folder in the project repository.
+			Firstly, in the setup function, the BLE name of the device is set to "Arduino Nano 33 IoT".
+			Then, a custom service is advertised and a characteristic is added to the service.
+			In an infinite loop, the program checks if a central device is connected. If there is, then the weight value is converted to a string and written in to the \textit{weight} characteristic. The connected central device would then be able to read the \textit{weight} reading as a string.
+			
 		%\subsection{Reading data}
+		
 		
 		\subsection{Mobile app}
 		
+			
+			https://github.com/karanimaan/EEE4113F-Project--Group-26/tree/main/Mobile%20App
+			
+			The Graphical User Interface (GUI) is responsible for displaying the live reading coming from the Arduino, and allowing the user to capture that reading and input the bird ID. The GUI also needs a save button to save the data to a file, so that the user can view the data in a spreadsheet.
+			The prototype of the GUI is shown below in figure \ref{fig:gui-prototype}.
+			
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[scale=1]{"Figures/GUI prototype"}
+				\caption{GUI prototype}
+				\label{fig:gui-prototype}
+			\end{figure}
 		
-		https://github.com/karanimaan/EEE4113F-Project--Group-26/tree/main/Mobile%20App
+			Firstly, a column (vertical layout) is created. Within it, the components are created. A screenshot of the GUI on startup is shown below in figure \ref{label}.
 		
-		The Graphical User Interface (GUI) is responsible for displaying the live reading coming from the Arduino, and allowing the user to capture that reading and input the bird ID. The GUI also needs a save button to save the data to a file, so that the user can view the data in a spreadsheet.
-		The prototype of the GUI is shown below in figure \ref{fig:gui-prototype}.
 		
-		\begin{figure}[h!]
-			\centering
-			\includegraphics[scale=1]{"Figures/GUI prototype"}
-			\caption{GUI prototype}
-			\label{fig:gui-prototype}
-		\end{figure}
-	
 		
 		\subsection{Saving data}
+			
+			
+			\begin{figure}
+				\centering
+				\includegraphics[width=\linewidth]{Figures/exported_data}
+				\caption{}
+				\label{fig:exporteddata}
+			\end{figure}
 		
 		The spreadsheet should have the following fields: FID, Date, Time, ID, Ring type, Sex, Mass, Day status, Day status, Day (of week), Weekday, Term, Name, Weighing Session, Location, Notes, People Count 1, People Count 2.
 		
