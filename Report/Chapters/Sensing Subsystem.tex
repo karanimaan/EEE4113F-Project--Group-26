@@ -186,21 +186,36 @@
 	\section{Acceptance Test Procedure (ATP)}
 	\subsection{Load Cell and Amplifier tests}
 	The amplifier circuit built on the breadboard and connected to a 6.6V power supply. The split supply was tested by measuring the voltage of the positive and negative rail with respect to 'Virtual GND' using a multimeter as shown in Figure \ref{fig:S7} below.
+	The input into the amplifier was connected to the waveform generator on the oscilloscope. The output with respect to 'Virtual GND' was measured using the oscilloscope and the output with respect to GND was measured using the multimeter (this is what the ADC would measure). The input was set to 0V DC and the potentiometer was adjusted until the measured output on the oscilloscope was also 0. The output to the Arduino was then measured using a multimeter. This was repeated for different input values until the output saturated. The measurement for the output when the input was 1mV DC is shown in \ref{fig:S8} below.
+	
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.4\linewidth]{Figures/ATP1.png}
 		\caption{Image of split supply test}
 		\label{fig:S7}
 	\end{figure}
-	The input into the amplifier was connected to the waveform generator on the oscilloscope. The output with respect to 'Virtual GND' was measured using the oscilloscope and the output with respect to GND was measured using the multimeter (this is what the ADC would measure). The input was set to 0V DC and the potentiometer was adjusted until the measured output on the oscilloscope was also 0. The output to the Arduino was then measured using a multimeter. This was repeated for different input values until the output saturated. The measurement for the output when the input was 1mV DC is shown in \ref{fig:S8} below.
+	
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[width=0.8\linewidth]{Figures/ATP2.png}
+		\includegraphics[width=0.8\linewidth]{Figures/ATP2.jpeg}
 		\caption{Image of Amplifier test when input is 1mV}
 		\label{fig:S8}
 	\end{figure}
 	
-	The load cell was attached to a mock scale as shown below.
+	The load cell was attached to a mock scale as shown in Figure below. Header pins were soldered to each of leads from the load cell. Within the same figure, the red and black leads were connected to $V_{cc}$ and $Virtual\_GND$ respectively, while the white and green wires leads connected to the $V_1$ and $V_2$ inputs of the amplifier respectively. A kitchen scale was then used to measure and record the weight of an empty water bottle. This bottle was then placed on the front of the scale above the nails. The output voltage from the amplifier was measured and recorded the same as before. This is shown in Figure below. This process was repeated for different weights up until the amplifier's output saturated. The weight of the bottle was varied but filling it up with different amounts of water. The bottle was placed at the same position on the scale in each run to ensure that the bottle's distance from the other end, or moment arm, was the same. 
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\linewidth]{Figures/Mock Scale.png}
+		\caption{Image of mock scale}
+		\label{fig:S9}
+	\end{figure}
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\linewidth]{Figures/ATP2.jpeg}
+		\caption{Image of load cell and amplifier test}
+		\label{fig:S10}
+	\end{figure}
 	% ----------------------------------------------------
 	\ifstandalone
 	\bibliography{../Bibliography/References.bib}
