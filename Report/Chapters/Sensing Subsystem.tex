@@ -37,14 +37,16 @@
 					| >{\centering\arraybackslash}X 
 					| >{\centering\arraybackslash}X |}
 				\hline
-				\textbf{User Requirement}                                      & \textbf{Specification   Description}                                                                                                           & \textbf{Specification   no.} \\ \hline
-				\multirow{2}{0.25\textwidth}{The scale must measure weights of up to 500g.} & The weight sensor must have a maximum capacity greater than 750g (1.5 times safety factor).                                                    & SS3                          \\ \cline{2-3} 
-				& The sensor and amplifier must output a voltage proportional to the weight force applied up   to a weight of 500g.                              & SS4                          \\ \hline
-				\multirow{2}{0.25\textwidth}{The scale measure weight accurate to 0.1g.}    & The ADC must be able to resolve voltage changes from weight changes that are less than 0.1g.                                                   & SS5                          \\ \cline{2-3} 
-				& The ADC must have a gain and offset error less than a voltage change resulting from a change   in weight of 0.1g.                              & SS6                          \\ \hline
-				\multirow{3}{0.25\textwidth}{The scale must have a tare function.}          & The microcontroller must have a digital input pin to read the users inputs from a   push button.                                               & SS7                          \\ \cline{2-3} 
-				& The microcontroller must subtract the current weight from all subsequent measurements when the   voltage on the digital pin receives an input. & SS8                          \\ \cline{2-3} 
-				& There must be an LCD screen that outputs the current weight to give the user feedback.                                                         & SS9                          \\ \hline
+				\textbf{User   Requirement}                                   & \textbf{Specification   Description}                                                                                                             & \textbf{Specification   no.} \\ \hline
+				The scale   must measure weights of up to 500g.               & The weight   sensor must have a maximum capacity greater than 750g (1.5 times safety   factor).                                                  & SS3                          \\ \hline
+				& The sensor   and amplifier must output a voltage proportional to the weight force applied   up to a weight of 500g.                              & SS4                          \\ \hline
+				& Microcontroller   must an ADC to convert the output voltage into weight measurement.                                                             & SS5                          \\ \hline
+				\multirow{2}{0.25\textwidth}{The scale   measure weight accurate to 0.1g.} & The ADC must   be able to resolve voltage changes from weight changes that are less than   0.1g.                                                 & SS6                          \\ \cline{2-3} 
+				& The ADC must   have a gain and offset error less than a voltage change resulting from a   change in weight of 0.1g.                              & SS7                          \\ \hline
+				\multirow{3}{0.25\textwidth}{The scale   must have a tare function}        & The   microcontroller must have a digital input pin to read the users inputs from a   push button.                                               & SS8                          \\ \cline{2-3} 
+				& The   microcontroller must subtract the current weight from all subsequent   measurements when the voltage on the digital pin receives an input. & SS9                          \\ \cline{2-3} 
+				& There must be   an LED that indicates when the scale is in tare mode.                                                                            & SS10                         \\ \hline
+				The scale must   be battery powered.                          & The microcontroller   and all the surrounding circuitry must be able to operate on one positive   rail.                                          & SS11                         \\ \hline
 			\end{tabularx}
 	\end{table}
 	
@@ -181,7 +183,24 @@
 		\label{fig:S6}
 	\end{figure}
 	
+	\section{Acceptance Test Procedure (ATP)}
+	\subsection{Load Cell and Amplifier tests}
+	The amplifier circuit built on the breadboard and connected to a 6.6V power supply. The split supply was tested by measuring the voltage of the positive and negative rail with respect to 'Virtual GND' using a multimeter as shown in Figure \ref{fig:S7} below.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.4\linewidth]{Figures/ATP1.png}
+		\caption{Image of split supply test}
+		\label{fig:S7}
+	\end{figure}
+	The input into the amplifier was connected to the waveform generator on the oscilloscope. The output with respect to 'Virtual GND' was measured using the oscilloscope and the output with respect to GND was measured using the multimeter (this is what the ADC would measure). The input was set to 0V DC and the potentiometer was adjusted until the measured output on the oscilloscope was also 0. The output to the Arduino was then measured using a multimeter. This was repeated for different input values until the output saturated. The measurement for the output when the input was 1mV DC is shown in \ref{fig:S8} below.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\linewidth]{Figures/ATP2.png}
+		\caption{Image of Amplifier test when input is 1mV}
+		\label{fig:S8}
+	\end{figure}
 	
+	The load cell was attached to a mock scale as shown below.
 	% ----------------------------------------------------
 	\ifstandalone
 	\bibliography{../Bibliography/References.bib}
