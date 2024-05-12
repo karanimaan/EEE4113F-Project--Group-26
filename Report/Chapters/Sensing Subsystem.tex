@@ -142,7 +142,7 @@
 	
 	If the new reference point is made to be "Virtual GND", then two rail voltages equal to $\pm \frac{V_{cc}}{2}$ are obtained. This does mean that output of the amplifier will have an offset of $\frac{V_{cc}}{2}$, but this can be stepped down using a voltage divider as to not damage the input to the microcontroller. In testing, a 5V supply was initially used but this resulted in the op-amps saturating. In the early stages of the design process, the amplifier was tested using $\pm3.3V$ and this worked fine so in the end a 6.6V supply was chosen. This will be the supply voltage required from the Power Subsystem. The Arduino Nano 33 IoT has an operating voltage of 3.3V so the voltage divider must have a gain of 0.5.
 	
-	Finally, because the output from the amplifier will no longer go directly to the microcontroller, an op-amp must be included in the low pass filter to buffer the input of the voltage divider. The new active low pass filter will be in a Sallen-Key configuration with $R = 100k\omega$ and $C = 47nF$ as shown in Figure \ref{fig:S1}.
+	Finally, because the output from the amplifier will no longer go directly to the microcontroller, an op-amp must be included in the low pass filter to buffer the input of the voltage divider. The new active low pass filter will be in a Sallen-Key configuration with $R = 100k\Omega$ and $C = 47nF$ as shown in Figure \ref{fig:S1}.
 	
 	\subsection{Analogue to Digital Converter (ADC)}
 	Since the weight force on the load cell is proportional to output voltage out of the load cell, the change in weight is equal to the change voltage as shown in the equation below.
@@ -175,13 +175,64 @@
 		\label{tab:S4}
 	\end{table}
 	
-	From Table \ref{tab:S4}, the offset error is equivalent to 0.151mV which is less than $V_{min}$. The maximum gain error is quite large, translating to an offset of 4.95mV at the last output code. Even under typical conditions the offset will be 0.33mV. However this is not a big issue, as the scale only needs to be accurate over half the range and the gain error can be compensated for in software. The noise performance is also great as at low data rates, not a single bit of resolution is lost to quantization noise. The final reason this module was chosen is that most ADC come standalone in a SIOC package, but this one comes as a development board kit with headers allowing for easy soldering onto a Veroboard. The circuit diagram for this module is shown in Figure \ref{fig:S6} below.
+	From Table \ref{tab:S4}, the offset error is equivalent to 0.151mV which is less than $V_{min}$. The maximum gain error is quite large, translating to an offset of 4.95mV at the last output code. Even under typical conditions the offset will be 0.33mV. However this is not a big issue, as the scale only needs to be accurate over half the range and the gain error can be compensated for in software. The noise performance is also great as at low data rates, not a single bit of resolution is lost to quantization noise. The final reason this module was chosen is that most ADC come standalone in a SIOC package, but this one comes as a development board kit with headers allowing for easy soldering onto a Veroboard. The circuit diagram for this module is shown in Figure \ref{fig:S6} below. 
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.4\linewidth]{Figures/ADC.png}
 		\caption{Circuit Schematic of the ADS1115}
 		\label{fig:S6}
 	\end{figure}
+	The ADC communicates with Arduino the I2C communication protocol, hence their SDA and SCL lines are connected. The Arduino has internal pull-up resistors on these lines so there's no need for external ones. The output from the amplifier is halved by the voltage divider and sent to channel 0 on the ADC. This is necessary as the ADC can only take 0.3V above the supply. In this case the supply will be the regulated 3.3V from the Arduino.
+	
+	\subsection{Weight Measurement Algorithm}
+	The ADC was read from in code using the ADS1X15 Arduino library by Rob Tillaart \cite{ADS1115_Lib}. The ADS1115 has a programmable gain amplifier (PGA) that allows it take more precise measurements at the cost of a reduced input voltage range. The different options for the gain with corresponding full scale range and precision are shown in \ref{tab:S5} below.
+	\begin{table}[h!]
+		\centering
+		\caption{Table on ADS1115 gain options}
+		\begin{tabularx}{0.8\textwidth} { 
+				| >{\centering\arraybackslash}X 
+				| >{\centering\arraybackslash}X |}
+			\hline
+			\textbf{FSR {[}V{]}} & \textbf{LSB Size {[}uV{]}} \\ \hline
+			+/- 6.144            & 187.5                      \\ \hline
+			+/- 4.096            & 125                        \\ \hline
+			+/- 2.048            & 62.5                       \\ \hline
+			+/- 1.024            & 31.25                      \\ \hline
+			+/- 0.512            & 15.625                     \\ \hline
+			+/- 0.256            & 7.8125                     \\ \hline
+		\end{tabularx}
+		\label{tab:S5}
+	\end{table}
+	The second option for the gain was chosen since the input is expected to be between 1.65V and 3.3V. The LSB size for this gain also meets the accuracy requirements. The data rate was also set to 16 samples per second as the sample rate for the system will 10 samples per second. These were both set in code using the setGain() and setDataRate() functions from the library. Once setup, the sampled value would be read from the ADC using the readADC() function. The ADC value was then converted into voltage in Volts by multiplying by the value returned by the toVoltage() function. That voltage is then converted to a weight in grams using the function shown in Figure \ref{fig:S14} below. 
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\linewidth]{Figures/voltsToGrams.png}
+		\caption{Code Snippet of the Function that converts voltage to a weight}
+		\label{fig:S14}
+	\end{figure}
+	
+	The output voltage from the amplifier is given by the expression below. 
+	\[V_{out} = \frac{1}{2}\left(994V_{in} + 3.3\right) \]
+	The input voltage from the load cell is found from the output voltage using the expression above. The weight is then determined from the input voltage using the fact that they are proportional, and this was implemented in code as shown in \ref{fig:S14} above.
+	
+	The final outputted weight value was the ten-point moving average of the all the measurements. The function shown in Figure \ref{fig:S15} implements this algorithm in code.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.5\linewidth]{Figures/MovingAverage.png}
+		\caption{Code Snippet of the Function that takes the Moving Average of the weights}
+		\label{fig:S15}
+	\end{figure}
+	If 'SIZE' is set to 10, the values array is a circular buffer that stores last 10 weight measurements, along with the sum of the whole array. The index increases incrementally with each new measurement and wraps back around to 0 once it goes past 9. This means the latest value is stored at position 'index' within the array, while the value one position ahead is the oldest. When a new value is added to the array, it is added to the sum while the oldest value is removed from the sum. The sum divided by 10 is then average that gets returned. By storing the sum in memory it removes the need for adding up all the values in the array when every measurement, making the program run more efficiently.
+	
+	\subsection{Tare Functionality}
+	The tare function was implemented using an interrupt tied to a push button. When the button is pressed the LED is toggled, and the current weight is stored is added to an offset value. The resulting measurement will be the difference between the weight and this offset, unless the offset is larger, in which it is just 0. This was implemented in code as shown in Figure \ref{fig:S16} below.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.7\linewidth]{Figures/ButtonPressed.png}
+		\caption{Code Snippet of Interrupt Service Routine for push button}
+		\label{fig:S16}
+	\end{figure}
+	When a button is pressed it bounces open and close many times in a split second, resulting in the microcontroller reading multiple inputs from one button press. Hence a delay of 250ms is added to allow the button to settle before taking input from it again. 
 	
 	\section{Acceptance Test Procedure (ATP)}
 	\subsection{Load Cell and Amplifier tests}
@@ -208,6 +259,18 @@
 		\label{fig:S10}
 	\end{figure}
 	
+	\subsection{Weight Measurement Test}
+	The ADC was connected to the Arduino as shown in Figure \ref{fig:S6} on the breadboard. The output from the voltage divider in Figure \ref{fig:S9} was connected to channel 0 on the ADC. The Arduino was connected to the PC, the weight measurement program was run and a serial connection was established to see the output in the terminal. Once again, a bottle filled with different amounts water was placed on top of the load cell. The weight of the bottle measured by the scale and the weight measurement determined in code were both recorded. The measurement for the empty 66g bottle is shown in Figure \ref{fig:S7} below.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.6\linewidth]{Figures/Weight Measurement.png}
+		\caption{Image of Weight measurement in terminal}
+		\label{fig:S17}
+	\end{figure}
+	
+	\subsection{Tare Function Test}
+	The push button was now connected to pin D2 on the Arduino while the LED was placed in series with a 100 $\Omega$ resistor and connected to pin D3. The button was pressed and the resulting weight change in the terminal was observed. 
+	 
 	\section{Results and Discussion}
 	\subsection{Load Cell and Amplifier test}
 	The plot of the output voltage w.r.t. GND and "Virtual GND" against the input voltage from the oscilloscope can be found in Figure \ref{fig:S11} in Appendix A4. The plot of the output voltage against the weight is shown in Figure \ref{fig:S12} below. It can be seen that the output voltage has linear response with the weight. 

@@ -27,8 +27,8 @@
 //====================================================================
 // GLOBAL VARIABLES
 //====================================================================
-float weights[SIZE+1];     // Arrray of previous voltage values
-int i;                    // Index of current value 
+float weights[SIZE+1];     // Circular buffer of previous weight values
+int i;                    // Index of weight value 
 int full;                 // Indicates whether array is full or not
 float offset;             // Weight offset
 volatile long last_press; // Time since last button press
@@ -36,26 +36,26 @@ ADS1115 ADS(0x48);        // Constructor for ADS1115 , default I2C address 0x48 
 //====================================================================
 // FUNCTION DECLARATIONS
 //====================================================================
-void buttonPressedISR() 
+void buttonPressedISR()
 {
-  if(millis() - last_press > DEBOUNCE_DELAY){
-    digitalWrite(LED_PIN, !digitalRead(LED_PIN));
+  if(millis() - last_press > DEBOUNCE_DELAY){     // Button debouncing
+    digitalWrite(LED_PIN, !digitalRead(LED_PIN)); // Toggle LED
     last_press = millis();
   }
 }
 
 float movingAverage(float* values, int index)
 {
-  float sum = values[SIZE]; 
-  sum += values[index];
-  if(index+1<SIZE) {
+  float sum = values[SIZE];   //Retrieve the running sum of the last 10 measurements
+  sum += values[index];       // Add the newest value
+  if(index+1<SIZE) {          // Remove the oldest value
     sum -= values[index+1];
   }
   else {
     sum -= values[0];
   }
-  values[SIZE] = sum;
-  return sum/SIZE;
+  values[SIZE] = sum;       // Store new sum
+  return sum/SIZE;          // Return average
 }
 
 float voltsToGrams(float V) { 
@@ -97,8 +97,6 @@ void setup()
 
 void loop() 
 {
-  ADS.setGain(0);
-
   // Measure execution time
   long int t = millis();
 
@@ -110,6 +108,7 @@ void loop()
   // Apply offset to weight
   weight = (weight-offset > 0) ? weight-offset : 0;
 
+  // Fill the circular buffer
   if(!full) {
     weights[i] = weight;
     weights[SIZE] += weight;
