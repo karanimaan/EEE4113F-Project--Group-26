@@ -18,9 +18,9 @@
 		\caption{Non-functional Specifications of the Sensing Subsystem}
 		\label{tab:S1}
 			\begin{tabularx}{0.8\textwidth}{ 
-					| >{\centering\arraybackslash}X 
-					| >{\centering\arraybackslash}X 
-					| >{\centering\arraybackslash}X |}
+					| >{\centering\arraybackslash}m 
+					| >{\centering\arraybackslash}b 
+					| >{\centering\arraybackslash}s |}
 			\hline
 			\textbf{User   Requirement} & \textbf{Specification   Description}                                     & \textbf{Specification   no.} \\ \hline
 			Portable                    & The final   circuitry must be able to fit in a box that is 100x100x50mm. & SS1                          \\ \hline
@@ -33,18 +33,20 @@
 		\caption{Functional Specifications for Sensing Subsystem}
 		\label{tab:S2}
 			\begin{tabularx}{0.8\textwidth}{ 
-					| >{\centering\arraybackslash}X 
-					| >{\centering\arraybackslash}X 
-					| >{\centering\arraybackslash}X |}
+					| >{\centering\arraybackslash}m 
+					| >{\centering\arraybackslash}b 
+					| >{\centering\arraybackslash}s |}
 				\hline
-				\textbf{User Requirement}                                      & \textbf{Specification   Description}                                                                                                           & \textbf{Specification   no.} \\ \hline
-				\multirow{2}{0.25\textwidth}{The scale must measure weights of up to 500g.} & The weight sensor must have a maximum capacity greater than 750g (1.5 times safety factor).                                                    & SS3                          \\ \cline{2-3} 
-				& The sensor and amplifier must output a voltage proportional to the weight force applied up   to a weight of 500g.                              & SS4                          \\ \hline
-				\multirow{2}{0.25\textwidth}{The scale measure weight accurate to 0.1g.}    & The ADC must be able to resolve voltage changes from weight changes that are less than 0.1g.                                                   & SS5                          \\ \cline{2-3} 
-				& The ADC must have a gain and offset error less than a voltage change resulting from a change   in weight of 0.1g.                              & SS6                          \\ \hline
-				\multirow{3}{0.25\textwidth}{The scale must have a tare function.}          & The microcontroller must have a digital input pin to read the users inputs from a   push button.                                               & SS7                          \\ \cline{2-3} 
-				& The microcontroller must subtract the current weight from all subsequent measurements when the   voltage on the digital pin receives an input. & SS8                          \\ \cline{2-3} 
-				& There must be an LCD screen that outputs the current weight to give the user feedback.                                                         & SS9                          \\ \hline
+				\textbf{User   Requirement}                                   & \textbf{Specification   Description}                                                                                                             & \textbf{Specification   no.} \\ \hline
+				The scale   must measure weights of up to 500g.               & The weight   sensor must have a maximum capacity greater than 750g (1.5 times safety   factor).                                                  & SS3                          \\ \hline
+				& The sensor   and amplifier must output a voltage proportional to the weight force applied   up to a weight of 500g.                              & SS4                          \\ \hline
+				& Microcontroller must have an algorithm for converting output codes from the ADC into a weight measurement.                                                             & SS5                          \\ \hline
+				\multirow{2}{0.2\textwidth}{The scale   measure weight accurate to 0.1g.} & The ADC must   be able to resolve voltage changes from weight changes that are less than   0.1g.                                                 & SS6                          \\ \cline{2-3} 
+				& The ADC must   have a gain and offset error less than a voltage change resulting from a   change in weight of 0.1g.                              & SS7                          \\ \hline
+				\multirow{3}{0.2\textwidth}{The scale   must have a tare function to ignore the weight of the perch}        & The   microcontroller must have a digital input pin to read the user's inputs.                                               & SS8                          \\ \cline{2-3} 
+				& The microcontroller must subtract the current weight from all subsequent measurements when the digital pin receives an input. & SS9                          \\ \cline{2-3} 
+				& There must be   an LED that indicates when the scale is in tare mode.                                                                            & SS10                         \\ \hline
+				The scale must   be battery powered.                          & The microcontroller   and all the surrounding circuitry must be able to operate with one positive   rail.                                          & SS11                         \\ \hline
 			\end{tabularx}
 	\end{table}
 	
@@ -111,7 +113,7 @@
 		\label{fig:S2}
 	\end{figure}
 	
-	The input was set to a 1$V_{pp}$ square wave with a frequency of 20Hz. Figure \ref{fig:S3} below shows the input and output of the circuit.
+	The input was set to a 1$V_{pp}$ square wave with a frequency of 5Hz. Figure \ref{fig:S3} below shows the input and output of the circuit.
 	
 	\begin{figure}[h!]
 		\centering
@@ -176,9 +178,44 @@
 	From Table \ref{tab:S4}, the offset error is equivalent to 0.151mV which is less than $V_{min}$. The maximum gain error is quite large, translating to an offset of 4.95mV at the last output code. Even under typical conditions the offset will be 0.33mV. However this is not a big issue, as the scale only needs to be accurate over half the range and the gain error can be compensated for in software. The noise performance is also great as at low data rates, not a single bit of resolution is lost to quantization noise. The final reason this module was chosen is that most ADC come standalone in a SIOC package, but this one comes as a development board kit with headers allowing for easy soldering onto a Veroboard. The circuit diagram for this module is shown in Figure \ref{fig:S6} below.
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[width=0.5\linewidth]{Figures/ADC.png}
+		\includegraphics[width=0.4\linewidth]{Figures/ADC.png}
 		\caption{Circuit Schematic of the ADS1115}
 		\label{fig:S6}
+	\end{figure}
+	
+	\section{Acceptance Test Procedure (ATP)}
+	\subsection{Load Cell and Amplifier tests}
+	The amplifier circuit built on the breadboard and connected to a 6.6V power supply. The split supply was tested by measuring the voltage of the positive and negative rail with respect to "Virtual GND" using a multimeter as shown in Figure \ref{fig:S7} in Appendix A4.
+	The input into the amplifier was connected to the waveform generator on the oscilloscope. The output with respect to "Virtual GND" was measured using the oscilloscope and the output with respect to GND was measured using the multimeter (this is what the ADC would measure). The input was set to 0V DC and the potentiometer was adjusted until the measured output on the oscilloscope was also 0. The output to the Arduino was then measured using a multimeter. This was repeated for different input values until the output saturated. This was compared to the ideal output given by the following expression.
+	\begin{center}
+		$V_{out}=\frac{1}{2}\left(994V_{in} + 3.3\right)$ \\
+	\end{center}
+	
+	The measurement for the output when the input was 1mV DC can be seen in Figure \ref{fig:S8} in Appendix A4.
+	
+	The load cell was attached to a mock scale as shown in Figure \ref{fig:S9} below. Header pins were soldered to each of leads from the load cell. Within the same figure, the red and black leads were connected to $V_{cc}$ and $Virtual\_GND$ respectively, while the white and green wires leads connected to the $V_1$ and $V_2$ inputs of the amplifier respectively. A kitchen scale was then used to measure and record the weight of an empty water bottle. This bottle was then placed on the front of the scale above the nails. The output voltage from the amplifier was measured and recorded the same as before. This is shown in Figure below. This process was repeated for different weights up until the amplifier's output saturated. The weight of the bottle was varied by filling it up with different amounts of water. The bottle was placed at the same position on the scale in each run to ensure that the bottle's distance from the other end, or moment arm, was the same. 
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\linewidth]{Figures/Mock Scale.jpg}
+		\caption{Image of mock scale}
+		\label{fig:S9}
+	\end{figure}
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\linewidth]{Figures/ATP3.jpg}
+		\caption{Image of load cell and amplifier test}
+		\label{fig:S10}
+	\end{figure}
+	
+	\section{Results and Discussion}
+	\subsection{Load Cell and Amplifier test}
+	The plot of the output voltage w.r.t. GND and "Virtual GND" against the input voltage from the oscilloscope can be found in Figure \ref{fig:S11} in Appendix A4. The plot of the output voltage against the weight is shown in Figure \ref{fig:S12} below. It can be seen that the output voltage has linear response with the weight. 
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.4\linewidth]{Figures/Result2.png}
+		\caption{Plot of the output voltage against the weight}
+		\label{fig:S12}
 	\end{figure}
 	
 	
