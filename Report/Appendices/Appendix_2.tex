@@ -1,0 +1,22 @@
+% ----------------------------------------------------
+% Appendix A4
+% ----------------------------------------------------
+\documentclass[class=report,11pt,crop=false]{standalone}
+\input{../Style/ChapterStyle.tex}
+\input{../FrontMatter/Glossary.tex}
+\begin{document}
+	% ----------------------------------------------------
+	\chapter{Appendix A5}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.4\linewidth]{Figures/LM395 SPECS.png}
+		\caption{LM395 Electrical Specifications}
+		\label{fig:P5}
+	\end{figure}
+	% ----------------------------------------------------
+	\ifstandalone
+	\bibliography{../Bibliography/References.bib}
+	\printnoidxglossary[type=\acronymtype,nonumberlist]
+	\fi
+\end{document}
+% ----------------------------------------------------

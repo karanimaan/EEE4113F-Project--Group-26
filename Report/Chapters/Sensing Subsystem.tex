@@ -10,9 +10,10 @@
 	\vspace{0.5cm}
 	% ----------------------------------------------------
 	\section{Introduction}
-	The aim of this subsystem is to translate the force from the bird's weight on the scale into a digital reading. It involves designing and constructing the circuitry needed to change the weight into a analogue voltage, developing the algorithms in the micro-controller unit (MCU) used to process this signal and change it into a weight reading of the bird. Another component to this subsystem is to have accurate timekeeping so the weight data is timestamped. 
+	In order store the weight data of the Starlings in a database, the weight of the birds must first be obtained. That is the purpose of this subsystem, to translate the weight force of each bird on the scale into a digital reading that can be transmitted. This section will go through the design process involved in constructing the circuitry that turns the weight into an electrical signal, and developing the algorithms that will convert this signal into a usable measurement. As such, this section not only encompasses the sensors but also the microcontroller and the code responsible for allowing the two to communicate.  
 	
 	\section{Requirements Analysis}
+	From the user requirements discussed in Section \ref{section:Req}, the non-functional and functional specifications for this specific subsystem were derived. They are shown in Tables \ref{tab:S1} and \ref{tab:S2} respectively.
 	\begin{table}[h!]
 		\centering
 		\caption{Non-functional Specifications of the Sensing Subsystem}
@@ -28,35 +29,34 @@
 			\end{tabularx}
 	\end{table}
 	
-	\begin{table}[h!]
-		\centering
-		\caption{Functional Specifications for Sensing Subsystem}
-		\label{tab:S2}
-			\begin{tabularx}{0.8\textwidth}{ 
-					| >{\centering\arraybackslash}m 
-					| >{\centering\arraybackslash}b 
-					| >{\centering\arraybackslash}s |}
-				\hline
-				\textbf{User   Requirement}                                   & \textbf{Specification   Description}                                                                                                             & \textbf{Specification   no.} \\ \hline
-				The scale   must measure weights of up to 500g.               & The weight   sensor must have a maximum capacity greater than 750g (1.5 times safety   factor).                                                  & SS3                          \\ \hline
-				& The sensor   and amplifier must output a voltage proportional to the weight force applied   up to a weight of 500g.                              & SS4                          \\ \hline
-				& Microcontroller must have an algorithm for converting output codes from the ADC into a weight measurement.                                                             & SS5                          \\ \hline
-				\multirow{2}{0.2\textwidth}{The scale   measure weight accurate to 0.1g.} & The ADC must   be able to resolve voltage changes from weight changes that are less than   0.1g.                                                 & SS6                          \\ \cline{2-3} 
-				& The ADC must   have a gain and offset error less than a voltage change resulting from a   change in weight of 0.1g.                              & SS7                          \\ \hline
-				\multirow{3}{0.2\textwidth}{The scale   must have a tare function to ignore the weight of the perch}        & The   microcontroller must have a digital input pin to read the user's inputs.                                               & SS8                          \\ \cline{2-3} 
-				& The microcontroller must subtract the current weight from all subsequent measurements when the digital pin receives an input. & SS9                          \\ \cline{2-3} 
-				& There must be   an LED that indicates when the scale is in tare mode.                                                                            & SS10                         \\ \hline
-				The scale must   be battery powered.                          & The microcontroller   and all the surrounding circuitry must be able to operate with one positive   rail.                                          & SS11                         \\ \hline
-			\end{tabularx}
-	\end{table}
+
+\begin{longtable}[c]{|p{.25\textwidth}|p{.4\textwidth}|p{.15\textwidth}|}
+	\caption{Functional Specifications for Sensing Subsystem}
+	\label{tab:S2}\\
+	\hline
+	\textbf{User   Requirement}                                        & \textbf{Specification   Description}                                                                                              & \textbf{Specification   no.} \\ \hline
+	\endfirsthead
+	%
+	\endhead
+	%
+	\multirow{3}{.25\textwidth}{The scale   must measure weights of up to 500g.}   & The weight   sensor must have a maximum capacity greater than 750g (1.5 times safety   factor).                                   & SS3                          \\ \cline{2-3} 
+	& The sensor   and amplifier must output a voltage proportional to the weight force applied   up to a weight of 500g.               & SS4                          \\ \cline{2-3} 
+	& The microcontroller   must run an algorithm that converts output codes from the ADC into a weight   measurement.                  & SS5                          \\ \hline
+	\multirow{2}{.25\textwidth}{The scale must   measure weight accurate to 0.1g.} & The ADC must   be able to resolve voltage changes from weight changes that are less than   0.1g.                                  & SS6                          \\ \cline{2-3} 
+	& The ADC must   have a full-scale error less than a voltage change resulting from a change in   weight of 0.1g.                    & SS7                          \\ \hline
+	\multirow{3}{.25\textwidth}{The scale   must have a tare function.}            & The   microcontroller must have a digital input pin to read the user’s inputs from   a button or switch.                          & SS8                          \\ \cline{2-3} 
+	& The   microcontroller must subtract the current weight from all subsequent   measurements when the digital pin receives an input. & SS9                          \\ \cline{2-3} 
+	& There must be   an LED that indicates when the scale is in tare mode.                                                             & SS10                         \\ \hline
+	The scale   must be battery-powered.                               & The   microcontroller and all the surrounding circuitry must be able to operate on   one positive rail.                           & SS11                         \\ \hline
+\end{longtable}
 	
 	\section{Design Process}
 	
 	\subsection{Microcontroller Unit (MCU)}
-	The Arduino was chosen as its Integrated Development Environment (IDE) has ample support and libraries which will make interfacing with all different modules simple and straightforward. Within the Arduino family the Arduino Nano was initially chosen as it was one of the cheapest Arduino and it came in a small form factor. However, the User Interface subsystem required a WiFi or Bluetooth module so the Arduino Nano 33 IoT was chosen instead. Although BLE and BLE Sense also meet these requirements, they come with additional sensors that are unnecessary. All the Arduino chips also come with several low power modes that can be leveraged to reduce power consumption.
+	The Arduino was chosen as its Integrated Development Environment (IDE) has ample support and libraries which will make interfacing with all the different modules simple and straightforward. Within the Arduino family the Arduino Nano was initially chosen as it was one of the cheapest Arduino and it came in a small form factor. However, the User Interface subsystem required a WiFi or Bluetooth module so the Arduino Nano 33 IoT was chosen instead. Although BLE and BLE Sense also meet these requirements, they come with additional sensors that are unnecessary. All the Arduino chips also come with several low power modes that can be leveraged to reduce power consumption.
 	
 	\subsection{Weight Sensor}
-	A strain gauge is an electrical component whose resistance changes when a force is applied to it. Strain gauges work on the principle that when the resistance of a conductor is proportional to its length, as shown in the equation below. 
+	A strain gauge is an electrical component whose resistance changes when a force is applied to it. Strain gauges work on the principle that the resistance of a conductor is proportional to its length, as shown in the equation below. 
 	\[R = \rho \frac{L}{A}\]
 	One solution is to put a strain gauge in series with another resistance, then place the strain gauge on a beam. When the beam deflects under the bird’s weight, the change in voltage across the strain gauge can be measured. The issue with this setup is that the change in resistance, and thus the subsequent change in voltage, will be very small. This means a very high resolution ADC will be required to resolve these small changes in voltage. The resolution required could be reduced by amplifying the signal, however this would also amplify the DC offset introduced by the voltage divider, quickly saturating the output.
 	
@@ -92,15 +92,16 @@
 	
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[width=0.9\linewidth]{Figures/Amplifier.png}
+		\includegraphics[width=0.8\linewidth]{Figures/Amplifier.png}
 		\caption{Circuit Schematic of Instrumentation Amplifier}
 		\label{fig:S1}
 	\end{figure}
 	
 	The circuit has three stages. The first stage has two input buffers which also amplify the input signal. The second is a differential amplifier which is a circuit whose output is proportional to the difference between the two inputs. The final stage is a low pass filter. The final output voltage is related to the input voltage by the expression below.
 	\[V_{out} = (V_2 - V_1) \left(1 + \frac{2(R_2+R_3)}{R_1}\right) \left(\frac{R_9}{R_6}\right) \]
-	From the expression above, when the load cell is connected to the two input terminals, its output will be amplified by a factor of 994, which is close to the gain required. 
-	The amplifier have such a large gain presents two issues.
+	\captionof{figure}{Output Voltage of the Instrumentation Amplifier}
+	\label{eqn:S1}
+	From the expression above, when the load cell is connected to the two input terminals, its output will be amplified by a factor of 994, which is close to the gain required. The amplifier have such a large gain presents two issues.
 	
 	The first is that real op-amps have an input offset voltage. As the offsets from the input stage propagate through the circuit, they are amplified resulting in the output having a large bias and saturating for very small weights, hence the op-amps used were the TL071P. These are JFET op-amps meaning they have a very low input offset voltage, in this case, of 1mV. This is still large in comparison to the input, but they also come with two NULL pins which allows the input offset to be adjusted, and thus reduced to 0. The is the purpose of potentiometer RV1 in Figure \ref{fig:S1}. Another reason for choosing TL071P is that their minimum recommended supply voltage is 4.5V which means unlike other JFET op-amps they can operate at lower supply voltages. This advantageous since the scale will be battery powered so there will not be a large supply.
 	
@@ -131,7 +132,6 @@
 		\label{fig:S4}
 	\end{figure}
 	As seen above, the filter now meets the speed requirements.
-	
 	Since the instrumentation amplifier has op-amps, it needs 2 rail voltages, a positive and a negative. Unfortunately there is only a single supply, however this supply can be split in two with a simple op-amp circuit, as shown in Figure \ref{fig:S5} below.
 	\begin{figure}[h!]
 		\centering
@@ -146,9 +146,12 @@
 	
 	\subsection{Analogue to Digital Converter (ADC)}
 	Since the weight force on the load cell is proportional to output voltage out of the load cell, the change in weight is equal to the change voltage as shown in the equation below.
-	\begin{center}
-		$\frac{W_1}{W_2} = \frac{V_1}{V_2}$ \\ 
-	\end{center}
+	\begin{figure}[h!]
+		\centering
+		$\frac{W_1}{W_2} = \frac{V_1}{V_2}$ \\
+		\caption{Relationship between Weight and Voltage}
+		\label{eqn:S2}
+	\end{figure} \\
 	By substituting in the rated load, rated output and the minimum weight, the smallest change in the output can be determined.
 	\begin{center}
 		$\frac{0.1g}{1000g} = \frac{V_{min}}{0.5(994(3.3mV))}$ \\
@@ -202,8 +205,8 @@
 			+/- 0.256            & 7.8125                     \\ \hline
 		\end{tabularx}
 		\label{tab:S5}
-	\end{table}
-	The second option for the gain was chosen since the input is expected to be between 1.65V and 3.3V. The LSB size for this gain also meets the accuracy requirements. The data rate was also set to 16 samples per second as the sample rate for the system will 10 samples per second. These were both set in code using the setGain() and setDataRate() functions from the library. Once setup, the sampled value would be read from the ADC using the readADC() function. The ADC value was then converted into voltage in Volts by multiplying by the value returned by the toVoltage() function. That voltage is then converted to a weight in grams using the function shown in Figure \ref{fig:S14} below. 
+	\end{table} \\
+	The second option for the gain was chosen since the input is expected to be between 1.65V and 3.3V. The LSB size for this gain also meets the accuracy requirements. The data rate was also set to 16 samples per second as the sample rate for the system will 10 samples per second, and the lower the sample rate, the lower the noise. These were both set in code using the setGain() and setDataRate() functions from the library. Once setup, the sampled value would be read from the ADC using the readADC() function. The ADC value was then converted into voltage in Volts by multiplying it by the value returned by the toVoltage() function from the same library. That voltage would then be converted to a weight in grams using the voltsToGrams() function shown in Figure \ref{fig:S14} below. 
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.8\linewidth]{Figures/voltsToGrams.png}
@@ -211,28 +214,28 @@
 		\label{fig:S14}
 	\end{figure}
 	
-	The output voltage from the amplifier is given by the expression below. 
+	From Equation \ref{eqn:S1}, the output voltage of the amplifier is...
 	\[V_{out} = \frac{1}{2}\left(994V_{in} + 3.3\right) \]
-	The input voltage from the load cell is found from the output voltage using the expression above. The weight is then determined from the input voltage using the fact that they are proportional, and this was implemented in code as shown in \ref{fig:S14} above.
+	And from this, the input voltage from the load cell can be determined. The weight is then calculated using Equation \ref{eqn:S2}, and this was implemented in code as shown in \ref{fig:S14} above.
 	
-	The final outputted weight value was the ten-point moving average of the all the measurements. The function shown in Figure \ref{fig:S15} implements this algorithm in code.
+	The final outputted weight value was the ten-point moving average of the all the measurements. The purpose of this was reduce the effect of the bird's rapid movements on the weight measurement, as a moving average changes slower when compared to the input. This algorithm is implemented in code by the movingAverage() function shown in Figure \ref{fig:S15} below.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.5\linewidth]{Figures/MovingAverage.png}
 		\caption{Code Snippet of the Function that takes the Moving Average of the weights}
 		\label{fig:S15}
-	\end{figure}
-	If 'SIZE' is set to 10, the values array is a circular buffer that stores last 10 weight measurements, along with the sum of the whole array. The index increases incrementally with each new measurement and wraps back around to 0 once it goes past 9. This means the latest value is stored at position 'index' within the array, while the value one position ahead is the oldest. When a new value is added to the array, it is added to the sum while the oldest value is removed from the sum. The sum divided by 10 is then average that gets returned. By storing the sum in memory it removes the need for adding up all the values in the array when every measurement, making the program run more efficiently.
+	\end{figure} \\
+	If "SIZE" is set to 10, the "values" array is a circular buffer that stores last 10 weight measurements, along with the sum of the whole array. The index increases incrementally with each new measurement and wraps back around to 0 once it goes past 9. This means that the latest value is stored at position 'index' within the array, while the value one position ahead of it is the oldest. When a new value is added to the array, it is added to the sum while the oldest value is removed from the sum. The sum divided is subsequently by "SIZE" or 10 and that is the average that gets returned. By storing the sum in memory it removes the need to add up all the values in the array with every new measurement, making the program run more efficiently.
 	
 	\subsection{Tare Functionality}
-	The tare function was implemented using an interrupt tied to a push button. When the button is pressed the LED is toggled, and the current weight is stored is added to an offset value. The resulting measurement will be the difference between the weight and this offset, unless the offset is larger, in which it is just 0. This was implemented in code as shown in Figure \ref{fig:S16} below.
+	The tare function was implemented using an interrupt tied to the input of a push button. The button is made active low by connecting an internal pull up resistor in code. The interrupt is set to trigger whenever there is a falling edge from the button, which occurs when it is initially pressed. The corresponding Interupt Service Routine (ISR) toggles the LED when this occurs as shown in Figure\ref{fig:S16} below. Within the main loop the change in the LED state is detected and the current weight is stored is added to an offset value. When the LED is toggled ON, all subsequent measurement will now be the difference between the weight and this offset, unless the offset is larger, in which it is just 0.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.7\linewidth]{Figures/ButtonPressed.png}
 		\caption{Code Snippet of Interrupt Service Routine for push button}
 		\label{fig:S16}
-	\end{figure}
-	When a button is pressed it bounces open and close many times in a split second, resulting in the microcontroller reading multiple inputs from one button press. Hence a delay of 250ms is added to allow the button to settle before taking input from it again. 
+	\end{figure}\\
+	When a button is pressed it does not close shut immediately. Instead its contacts bounce off one another many times within a split second, resulting in the microcontroller reading multiple inputs from one button press. Hence a delay of 250ms is added to allow the button to settle before taking input from it again. 
 	
 	\section{Acceptance Test Procedure (ATP)}
 	\subsection{Load Cell and Amplifier tests}
@@ -281,6 +284,15 @@
 		\label{fig:S12}
 	\end{figure}
 	
+	\subsection{Load Cell and Amplifier test}
+	The plot of the output voltage w.r.t. GND and "Virtual GND" against the input voltage from the oscilloscope can be found in Figure \ref{fig:S11} in Appendix A4. The plot of the output voltage against the weight is shown in Figure \ref{fig:S12} below. It can be seen that the output voltage has linear response with the weight. 
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.4\linewidth]{Figures/Result2.png}
+		\caption{Plot of the output voltage against the weight}
+		\label{fig:S12}
+	\end{figure}
 	
 	% ----------------------------------------------------
 	\ifstandalone
