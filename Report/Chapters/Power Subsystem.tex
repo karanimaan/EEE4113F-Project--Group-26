@@ -119,8 +119,7 @@
 	%%instert table of specifications of 1N5819
 	
 	\subsection{Voltage regulation}
-	LM117 was used in the voltage regulation process. the IC uses takes in voltages in the ranges of between 3-40V. This makes it an optimal choice for our design. some significant aspects of using this IC includes costs and simplicity. For the same functionality, you spend less and have a simple circuit to deal with. The voltage regulation circuit is shown below. This circuit is integrated with the protection circuits to form a protected regulatory supply.  
-	
+	LM117 was used in the voltage regulation process. the IC uses takes in voltages in the ranges of between 3-40V. This makes it an optimal choice for our design. some significant aspects of using this IC includes costs and simplicity. For the same functionality, you spend less and have a simple circuit to deal with. The voltage regulation circuit is shown below. This circuit is integrated with the protection circuits to form a protected regulatory supply. The regulated voltage is 6.6V, which is the exact voltage that drives the microcontroller and the sensors of the Sensing submodule.  
 	
 	\begin{figure}[h!]
 		\centering
@@ -131,7 +130,7 @@
 	
 	
 	\subsection{Battery power level monitoring}
-	To oversee the battery status, a method called voltage divider implementation was employed. This approach entails linking a network of resistors to the battery, establishing a voltage divider setup. The configuration of resistors is engineered to decrease the battery's highest voltage (usually 4.2V for a lithium-ion battery) to a level of voltage that can be precisely gauged by the ESP32's analog pin. By gauging the voltage output of the resistor network, the system can ascertain the remaining charge level of the battery. Subsequently, the ESP32 can enact suitable measures, such as issuing notifications or transitioning into a low-power mode, when the battery's charge level reaches a critical low.
+	For monitoring the battery status, a voltage input is sent to an IC which will convert the voltage into readable battery level indicator. When the voltage level on the batteries reach a certain level, the user will b notified via a notification to charge or change the battery.  
 	
 	\section{Acceptable Test Procedure}
 		\begin{table}[h!]
