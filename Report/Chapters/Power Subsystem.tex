@@ -35,7 +35,9 @@
 				| >{\centering\arraybackslash}b 
 				| >{\centering\arraybackslash}s |}
 			\hline
-			\textbf{No.}  & \textbf{Description}                                                                                                     &\textbf{zAcceptance criteria} \\ \hline
+			\textbf{No.}  & 
+			\textbf{Description}                                                                                         
+			&\textbf{Acceptance criteria} \\ \hline
 			PS1   & Charging compatibility   & The PSU must have a charging system that is easy and compatible to common charging power sources.   \\ \hline
 			& PS2 & Safety      & The PSU must be designed in such a way that it provides safety to the users (Sally and and birds), as well as safety to the components used.  \\ \hline
 			& PS3  & Physical Size    & The Power supply unit should relatively take less space in the whole design not to scare away the birds. \\ \hline
@@ -114,9 +116,8 @@
 	\subsubsection{Reverse polarity protection}
 	\vspace{0.5cm}
 	
-	The battery is safeguarded against reverse polarity by employing the a Schottky diode 1N5819. This diode is renowned for its efficacy by having a minimal forward voltage drop of 0.2-0.3V. In the event of reversed battery polarity, the voltage potential at the anode of the diode will be lower than that at the cathode, effectively preventing current flow and thereby shutting the circuit down. No power will be drawn back to the battery, further preserving the battery's lifespan and increasing its reliability. Please see diode's specifications below.
+	The battery is safeguarded against reverse polarity by employing the a Schottky diode 1N5819. This diode is renowned for its efficacy by having a minimal forward voltage drop of 0.2-0.3V. In the event of reversed battery polarity, the voltage potential at the anode of the diode will be lower than that at the cathode, effectively preventing current flow and thereby shutting the circuit down. No power will be drawn back to the battery, further preserving the battery's lifespan and increasing its reliability.
 	
-	%%instert table of specifications of 1N5819
 	
 	\subsection{Voltage regulation}
 	LM117 was used in the voltage regulation process. the IC uses takes in voltages in the ranges of between 3-40V. This makes it an optimal choice for our design. some significant aspects of using this IC includes costs and simplicity. For the same functionality, you spend less and have a simple circuit to deal with. The voltage regulation circuit is shown below. This circuit is integrated with the protection circuits to form a protected regulatory supply. The regulated voltage is 6.6V, which is the exact voltage that drives the microcontroller and the sensors of the Sensing submodule.  
@@ -142,21 +143,22 @@
 				| >{\centering\arraybackslash}b 
 				| >{\centering\arraybackslash}s |}
 			\hline
-			\textbf{No.}  & \textbf{Description}                                                                                                     &\textbf{AAcceptance criteria}
-			& Test Result \\ \hline
-			ATP1   & Charging compatibility & The PSU must have a charging system that is easy and compatible to common charging power sources. & \textbf{PASSED}  \\ \hline
-			& PS2 & Safety      & The PSU must be designed in such a way that it provides safety to the users (Sally and and birds), as well as safety to the components used.  \\ \hline
-			& PS3  & Physical Size    & The Power supply unit should relatively take less space in the whole design not to scare away the birds. \\ \hline
-			& PS4  & Battery monitoring    & The user must be able to easily monitor the battery life of the design. \\ \hline
+			\textbf{No.}  & 
+			\textbf{Description}                                                                                              &\textbf{Acceptance criteria}
+			& \textbf{Test Results}\\ \hline
+			ATP1   & Charging compatibility & The PSU must have a charging system that is easy and compatible to common charging power sources. & \textbf{PASSED}. any 5V voltage source can charge the 18650 Li-ion battery. \\ \hline
+			& ATP2 & Safety      & The PSU must be designed in such a way that it provides safety to the users (Sally and and birds), as well as safety to the components used.& \textbf{PASSED}. Protection precautions were taken to ensure that the PSU is safe.  \\ \hline
+			& ATP3  & Physical Size    & The Power supply unit should relatively take less space in the whole design not to scare away the birds. & \textbf{PASSED}. The PSU fits in a breadboard alone. \\ \hline
+			& ATP4  & Battery monitoring    & The user must be able to easily monitor the battery life of the design. \\ \hline	
+			ATP5   & Output voltage  & The PSU must have a regulated output voltage of 6.6V to power up the microconroller and sensor as required by the Sensing Submodule. & \textbf{PASSED}.    \\ \hline
+			& ATP6 & Overload Protection  & The PSU must be ensure that each Li-ion battery does not charge to an overload voltage of 4.2V. & \textbf{PASSED}. System shows no charging reading after prolonged charging.  \\ \hline
+			& ATP7  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m. \\ \hline
+			& ATP8  & Overloading current  & The Power supply should not draw a current of more than 0.052A. & \textbf{PASSED}. The results show that the current reduced from 0.15A to below 0.0152A. \\ \hline
+			& ATP9  & Charging circuit    & The battery should be able to charge with a voltage of 5V.& \textbf{PASSED}\\ \hline
+			& ATP10  & Compatibility    & The Power supply unit should be able to get supply from different type s of power sources.& \textbf{PASSED} \\ \hline
+			& ATP11  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m. & \textbf{PASSED} \\ \hline
 			
-			PS5   & Output voltage  & The PSU must have a regulated output voltage of 6.6V to power up the microconroller and sensor as required by the Sensing Submodule.   \\ \hline
-			& PS6 & Overload Protection  & The PSU must be ensure that each Li-ion battery does not charge to an overload voltage of 4.2V. \\ \hline
-			& PS7  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m . \\ \hline
-			& PS8  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m . \\ \hline
-			& PS9  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m . \\ \hline
-			& PS10  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m . \\ \hline
-			& PS11  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m . \\ \hline
-			
+				
 		\end{tabularx}
 	\end{table}
 	\section{Testing and Results}
