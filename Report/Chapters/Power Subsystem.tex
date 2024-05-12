@@ -23,28 +23,47 @@
 		\label{fig:P1}
 	\end{figure}
 	
-	
-	
 	\section{Specifications}
 	\subsection{Non-Functional Specifications}
 	
 	\begin{table}[h!]
 		\centering
 		\caption{Non-Functional Specifications for Power Subsystem}
+		\label{tab:P1}
+		\begin{tabularx}{0.9\textwidth}{ 
+				| >{\centering\arraybackslash}m 
+				| >{\centering\arraybackslash}b 
+				| >{\centering\arraybackslash}s |}
+			\hline
+			\textbf{No.}  & \textbf{Description}                                                                                                     &\textbf{zAcceptance criteria} \\ \hline
+			PS1   & Charging compatibility   & The PSU must have a charging system that is easy and compatible to common charging power sources.   \\ \hline
+			& PS2 & Safety      & The PSU must be designed in such a way that it provides safety to the users (Sally and and birds), as well as safety to the components used.  \\ \hline
+			& PS3  & Physical Size    & The Power supply unit should relatively take less space in the whole design not to scare away the birds. \\ \hline
+			& PS4  & Battery monitoring    & The user must be able to easily monitor the battery life of the design. \\ \hline
+			
+		\end{tabularx}
+	\end{table}
+	\subsection{Functional Specifications}
+		\begin{table}[h!]
+		\centering
+		\caption{Functional Specifications for Power Subsystem}
 		\label{tab:P2}
 		\begin{tabularx}{0.9\textwidth}{ 
 				| >{\centering\arraybackslash}m 
 				| >{\centering\arraybackslash}b 
 				| >{\centering\arraybackslash}s |}
 			\hline
-			\textbf{No.}                                   & \textbf{Description}                                                                                                             & \textbf{Acceptance criteria} \\ \hline
-			PS1               & Charging compatibility                                                  & The PSU must have a charging system that is easy and compatible to common charging power sources.                         \\ \hline
-			& PS2             & Safety                             & The PSU must be designed in such a way that it provides safety to the users (Sally and and birds), as well as safety to the components used.                        \\ \hline
-			& PS3             & Physical Size                                               & The Power supply unit should relatively take less space in the whole design not to scare away the birds.                         \\ \hline
+			\textbf{No.}  & \textbf{Description}                                                                                                     &\textbf{Acceptance criteria} \\ \hline
+			PS5   & Output voltage  & The PSU must have a regulated output voltage of 6.6V to power up the microconroller and sensor as required by the Sensing Submodule.   \\ \hline
+			& PS6 & Overload Protection  & The PSU must be ensure that each Li-ion battery does not charge to an overload voltage of 4.2V. \\ \hline
+			& PS7  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m . \\ \hline
+			& PS8  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m . \\ \hline
+			& PS9  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m . \\ \hline
+			& PS10  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m . \\ \hline
+			& PS11  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m . \\ \hline
 			
 		\end{tabularx}
 	\end{table}
-	\subsection{Functional Specifications}
 	
 	\section{Design}
 	\subsection{Battery charging}
@@ -112,11 +131,72 @@
 	
 	
 	\subsection{Battery power level monitoring}
+	To oversee the battery status, a method called voltage divider implementation was employed. This approach entails linking a network of resistors to the battery, establishing a voltage divider setup. The configuration of resistors is engineered to decrease the battery's highest voltage (usually 4.2V for a lithium-ion battery) to a level of voltage that can be precisely gauged by the ESP32's analog pin. By gauging the voltage output of the resistor network, the system can ascertain the remaining charge level of the battery. Subsequently, the ESP32 can enact suitable measures, such as issuing notifications or transitioning into a low-power mode, when the battery's charge level reaches a critical low.
 	
 	\section{Acceptable Test Procedure}
-	
+		\begin{table}[h!]
+		\centering
+		\caption{Acceptable Test Procedure}
+		\label{tab:P3}
+		\begin{tabularx}{0.9\textwidth}{ 
+				| >{\centering\arraybackslash}m 
+				| >{\centering\arraybackslash}b 
+				| >{\centering\arraybackslash}s |}
+			\hline
+			\textbf{No.}  & \textbf{Description}                                                                                                     &\textbf{AAcceptance criteria}
+			& Test Result \\ \hline
+			ATP1   & Charging compatibility & The PSU must have a charging system that is easy and compatible to common charging power sources. & \textbf{PASSED}  \\ \hline
+			& PS2 & Safety      & The PSU must be designed in such a way that it provides safety to the users (Sally and and birds), as well as safety to the components used.  \\ \hline
+			& PS3  & Physical Size    & The Power supply unit should relatively take less space in the whole design not to scare away the birds. \\ \hline
+			& PS4  & Battery monitoring    & The user must be able to easily monitor the battery life of the design. \\ \hline
+			
+			PS5   & Output voltage  & The PSU must have a regulated output voltage of 6.6V to power up the microconroller and sensor as required by the Sensing Submodule.   \\ \hline
+			& PS6 & Overload Protection  & The PSU must be ensure that each Li-ion battery does not charge to an overload voltage of 4.2V. \\ \hline
+			& PS7  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m . \\ \hline
+			& PS8  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m . \\ \hline
+			& PS9  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m . \\ \hline
+			& PS10  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m . \\ \hline
+			& PS11  & Physical Size    & The Power supply unit should be within the rage 0.15x0.15m . \\ \hline
+			
+		\end{tabularx}
+	\end{table}
 	\section{Testing and Results}
 	
-	\section{Conclusion and Recommendations}
+	Battery charging xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\linewidth]{Figures/Battery chargerG.jpg}
+		\caption{Charging circuit}
+		\label{fig: P5}
+		
+	\end{figure}
+	
+		\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\linewidth]{Figures/Battey voltageC.jpg}
+		\caption{Charging circuit}
+		\label{fig: P6}
+	\end{figure}
+	
+	
+	\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{Figures/Overloading current.jpg}
+	\caption{Charging circuit}
+	\label{fig: P7}
+	\end{figure}
+	
+	
+	Overload and under-load protection xxxxxxxxxxxxxxxxxxxxxxxxxxx
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\linewidth]{Figures/OverloadAndUnderloadProtection.jpg}
+		\caption{Charging circuit}
+		\label{fig: P8}
+	\end{figure}
+	
+	Voltage regulation xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+	\section{Conclusion}
 	
 \end{document}
