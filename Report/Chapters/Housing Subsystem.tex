@@ -8,4 +8,46 @@
 	% ----------------------------------------------------
 	\chapter{Housing Subsystem (VSTMIC004)}
 	\vspace{0.5cm}
-	% ----------------------------------------------------
+	% ---------------------------------------------------
+	\section{Introduction}
+	The aim of this subsection is to discuss the design and implementation of the housing of the final design. This housing will physically contain and protect all other subsystems as well as facilitate their operation.
+	\section{Requirement Analysis}
+	
+	\begin{table}[h!]
+		\centering
+		\caption{Functional Specifications of the Sensing Subsystem}
+		\label{tab:S1}
+		\begin{tabularx}{0.8\textwidth}{ 
+				| >{\centering\arraybackslash}m 
+				| >{\centering\arraybackslash}b 
+				| >{\centering\arraybackslash}s |}
+			\hline
+			\textbf{User   Requirement} & \textbf{Specification   Description}                                     & \textbf{Specification   no.} \\ \hline
+			Portable                    & The final internal size of the design must be 100x100x50mm 			   & HS1                          \\ \hline
+			Weight Capacity        & The final design must be able to support the weight of all other subsystems including the maximum weight of the scale. & HS2 \\ \hline
+			Weight Distribution & The final design must be able to contain all other subsystems in such a way that the overall center of gravity of the final design sits in the middle of the housing subsystem & HS3 \\ \hline
+			External Push Button & The housing must support an external push button that can directly interface with the tare function developed in the Sensing Subsection & HS4 \\ \hline
+		\end{tabularx}
+	\end{table}
+
+\section{Design Process}
+\subsection{Housing Sections}
+The sections that will make up the housing subsystem can be broadly categorized into two sections; the outer section and the inner section. The outer section will directly interface with the users while the inner section will interface and house the other subsections. 
+
+The outer section will need to comply not only with all the user requirements but will also need to comply with any further material considerations, as will be discussed in section [next]. The outer section will directly interact with specifications HS1, HS2, HS3 and HS4.
+
+The internal section will primarily govern the HS3 specification as it will determine how the other subsections will be contained within the final housing. It will need to distribute the weight of all other subsections such that the accuracy of the sensing subsection is not affected.
+
+\subsection{Material Requirements}
+As emphasized during the literature review, material choice is a component that is of particular importance regarding this subsection. Not only is material choice a variable in the execution of the user requirements, but it is important to choose materials that won’t harm or pose any danger to the wildlife that will be interacting with the final design. From the research conducted in the literature review, the following material specifications have been designated,
+
+
+% ----------------------------------------------------
+	\ifstandalone
+	\bibliography{../Bibliography/References.bib}
+	\printnoidxglossary[type=\acronymtype,nonumberlist]
+	\fi
+	
+\end{document}
+
+

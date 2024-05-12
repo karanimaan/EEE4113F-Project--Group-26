@@ -1,5 +1,4 @@
-#include <ArduinoBLE.h>           // Bluetooth Library
-
+#include <ArduinoBLE.h> // Bluetooth Library
 
 
 // BLE Service Name
@@ -8,7 +7,6 @@ BLEService customService("180C");
 // BLE Characteristics
 // Syntax: BLE<DATATYPE>Characteristic <NAME>(<UUID>, <PROPERTIES>, <DATA LENGTH>)
 BLEStringCharacteristic ble_weight("2A56", BLERead | BLENotify, 13);
-
 
 void setup()
 {
@@ -22,7 +20,7 @@ void setup()
     }
 
     // Setting BLE Name
-    BLE.setLocalName("Arduino Environment Sensor");
+    BLE.setLocalName("Arduino Nano 33 IoT");
     
     // Setting BLE Service Advertisment
     BLE.setAdvertisedService(customService);
@@ -40,8 +38,7 @@ void setup()
 
 void loop()
 {
-    // Variable to check if cetral device is connected
-    BLEDevice central = BLE.central();
+    BLEDevice central = BLE.central();  // Variable to check if cetral device is connected
     if (central)
     {
         Serial.print("Connected to central: ");
@@ -50,11 +47,11 @@ void loop()
         {
             delay(200);
             
-            float weight = 346.2;
+            float weight = 346.2; // hardcoded value for unit test
             char weight_str[10];
             sprintf(weight_str, "%.1f", weight);
-            // Writing sensor values to the characteristic
-            ble_weight.writeValue(weight_str);
+            ble_weight.writeValue(weight_str);  // Writing sensor values to the characteristic
+
             printf("%.1f", weight);
 
             delay(1000);
