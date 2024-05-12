@@ -59,7 +59,9 @@ float movingAverage(float* values, int index)
 }
 
 float voltsToGrams(float V) { 
-  float weight = (V - 1.5935)/0.0015; //Convert input voltage to weight
+  float Vin = (2*V -3.3)/994;           // Determine input voltage from output voltage
+  float weight = 1000*Vin/(3.3*0.001);  // Determine weight from input voltage
+//  float weight = (V-1.5935)/0.0015;   // Linear regression model
   return weight;  
 }
 //====================================================================
