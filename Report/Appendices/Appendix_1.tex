@@ -7,49 +7,27 @@
 \begin{document}
 	% ----------------------------------------------------
 	\chapter{Appendix A4}
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[width=0.4\linewidth]{Figures/ATP1.png}
-		\caption{Image of split supply test}
-		\label{fig:S7}
-	\end{figure}
+	\subsection{Amplifier Test}
+	The input into the amplifier was connected to the waveform generator on the oscilloscope. The input was set to 0V DC and the potentiometer was adjusted until the measured output on the oscilloscope was also 0. The output to the Arduino was then measured using a multimeter. This was repeated for different input values until the output saturated. This was also compared to the ideal output given by the following expression.
+	\begin{center}
+		$V_{out}=\frac{1}{2}\left(994V_{in} + 3.3\right)$ \\
+	\end{center}
+	
+	The measurement for the output when the input was 1mV DC can be seen in Figure \ref{fig:S8} below. 
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.8\linewidth]{Figures/ATP2.jpeg}
 		\caption{Image of Amplifier test when input is 1mV}
 		\label{fig:S8}
 	\end{figure}
+	
+	The resulting plot of the output voltage against the input voltage from the oscilloscope is shown in Figure \ref{fig:S11} below.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.4\linewidth]{Figures/Result1.png}
 		\caption{Plot of Output voltage against input voltage from the oscilloscope}
 		\label{fig:S11}
 	\end{figure}
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[width=0.4\linewidth]{Figures/LM395 SPECS.png}
-		\caption{LM395 Electrical Specifications}
-		\label{fig:P5}
-	\end{figure}
-	
-	\chapter{Appendix A6}
-	\section{GA Table: VSTMIC004}
-		\begin{table}[h!]
-		\centering
-		\caption{GA Table for VSTMIC004}
-		\begin{tabularx}{0.8\textwidth}
-			{ 
-				| >{\centering\arraybackslash}X 
-				| >{\centering\arraybackslash}X |}
-			\hline
-			\textbf{Housing Subsystem} & \textbf{Where met}                                                    \\ \hline
-			GA 3: Engineering Design                                                                                               & Sections 3 and 6                                                      \\ \hline
-			GA 7: Sustainability and Impact of Engineering Activity                                                                & Section 6                                                             \\ \hline
-			GA 8: Individual, Team and Multi-Disciplinary Working                                                                  & See Teams group for meeting minutes                                   \\ \hline
-			GA 10: Engineering Professionalism                                                                                     & All submission activities met including final report and presentation \\ \hline
-		\end{tabularx}
-		\label{tab:A6}
-	\end{table}
 	% ----------------------------------------------------
 	\ifstandalone
 	\bibliography{../Bibliography/References.bib}

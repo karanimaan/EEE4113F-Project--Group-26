@@ -228,33 +228,34 @@
 	If "SIZE" is set to 10, the "values" array is a circular buffer that stores last 10 weight measurements, along with the sum of the whole array. The index increases incrementally with each new measurement and wraps back around to 0 once it goes past 9. This means that the latest value is stored at position 'index' within the array, while the value one position ahead of it is the oldest. When a new value is added to the array, it is added to the sum while the oldest value is removed from the sum. The sum divided is subsequently by "SIZE" or 10 and that is the average that gets returned. By storing the sum in memory it removes the need to add up all the values in the array with every new measurement, making the program run more efficiently.
 	
 	\subsection{Tare Functionality}
-	The tare function was implemented using an interrupt tied to the input of a push button. The button is made active low by connecting an internal pull up resistor in code. The interrupt is set to trigger whenever there is a falling edge from the button, which occurs when it is initially pressed. The corresponding Interupt Service Routine (ISR) toggles the LED when this occurs as shown in Figure\ref{fig:S16} below. Within the main loop the change in the LED state is detected and the current weight is stored is added to an offset value. When the LED is toggled ON, all subsequent measurement will now be the difference between the weight and this offset, unless the offset is larger, in which it is just 0.
+	The tare function was implemented using an interrupt tied to the input of a push button. The button is made active low by connecting an internal pull up resistor in code. The interrupt is set to trigger whenever there is a falling edge from the button, which occurs when it is initially pressed. The corresponding Interupt Service Routine (ISR) toggles the LED when this occurs as shown in Figure {fig:S16} below. Within the main loop the change in the LED state is detected and the current weight is stored is added to an offset value. When the LED is toggled ON, all subsequent measurement will now be the difference between the weight and this offset, unless the offset is larger, in which it is just 0.
+	
+	When a button is pressed it does not close shut immediately. Instead its contacts bounce off one another many times within a split second, resulting in the microcontroller reading multiple inputs from one button press. Hence a delay of 250ms is added to allow the button to settle before taking input from it again.  
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.7\linewidth]{Figures/ButtonPressed.png}
 		\caption{Code Snippet of Interrupt Service Routine for push button}
 		\label{fig:S16}
-	\end{figure}\\
-	When a button is pressed it does not close shut immediately. Instead its contacts bounce off one another many times within a split second, resulting in the microcontroller reading multiple inputs from one button press. Hence a delay of 250ms is added to allow the button to settle before taking input from it again. 
+	\end{figure}
 	
 	\section{Acceptance Test Procedure (ATP)}
 	\subsection{Load Cell and Amplifier tests}
-	The amplifier circuit built on the breadboard and connected to a 6.6V power supply. The split supply was tested by measuring the voltage of the positive and negative rail with respect to "Virtual GND" using a multimeter as shown in Figure \ref{fig:S7} in Appendix A4.
-	The input into the amplifier was connected to the waveform generator on the oscilloscope. The output with respect to "Virtual GND" was measured using the oscilloscope and the output with respect to GND was measured using the multimeter (this is what the ADC would measure). The input was set to 0V DC and the potentiometer was adjusted until the measured output on the oscilloscope was also 0. The output to the Arduino was then measured using a multimeter. This was repeated for different input values until the output saturated. This was compared to the ideal output given by the following expression.
-	\begin{center}
-		$V_{out}=\frac{1}{2}\left(994V_{in} + 3.3\right)$ \\
-	\end{center}
+	The amplifier circuit built on the breadboard and connected to a 6.6V power supply. The split supply was tested by measuring the voltage of the positive and negative rail with respect to "Virtual GND" using a multimeter as shown in Figure \ref{fig:S7} below.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.3\linewidth]{Figures/ATP1.png}
+		\caption{Image of split supply test}
+		\label{fig:S7}
+	\end{figure}
 	
-	The measurement for the output when the input was 1mV DC can be seen in Figure \ref{fig:S8} in Appendix A4.
-	
-	The load cell was attached to a mock scale as shown in Figure \ref{fig:S9} below. Header pins were soldered to each of leads from the load cell. Within the same figure, the red and black leads were connected to $V_{cc}$ and $Virtual\_GND$ respectively, while the white and green wires leads connected to the $V_1$ and $V_2$ inputs of the amplifier respectively. A kitchen scale was then used to measure and record the weight of an empty water bottle. This bottle was then placed on the front of the scale above the nails. The output voltage from the amplifier was measured and recorded the same as before. This is shown in Figure below. This process was repeated for different weights up until the amplifier's output saturated. The weight of the bottle was varied by filling it up with different amounts of water. The bottle was placed at the same position on the scale in each run to ensure that the bottle's distance from the other end, or moment arm, was the same. 
+	The load cell was attached to a mock scale as shown in Figure \ref{fig:S9} below. Header pins were soldered to each of leads from the load cell. Within the same figure, the red and black leads were connected to $V_{cc}$ and $Virtual\_GND$ respectively, while the white and green wires leads connected to the $V_1$ and $V_2$ inputs of the amplifier respectively. 
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.8\linewidth]{Figures/Mock Scale.jpg}
 		\caption{Image of mock scale}
 		\label{fig:S9}
-	\end{figure}
-	
+	\end{figure} \\
+	A kitchen scale was then used to measure and record the weight of an empty water bottle. This bottle was then placed on the front of the scale above the nails. The output with respect to "Virtual GND" was measured using the oscilloscope and the output with respect to GND was measured using the multimeter (this is what the ADC would measure). This is shown in Figure \ref{fig:S9} below. This process was repeated for different weights up to just before where the amplifier's output saturates. The weight of the bottle was varied by filling it up with different amounts of water. The bottle was placed at the same position on the scale in each run to ensure that the bottle's distance from the other end, or moment arm, was the same. 
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.8\linewidth]{Figures/ATP3.jpg}
@@ -263,7 +264,7 @@
 	\end{figure}
 	
 	\subsection{Weight Measurement Test}
-	The ADC was connected to the Arduino as shown in Figure \ref{fig:S6} on the breadboard. The output from the voltage divider in Figure \ref{fig:S9} was connected to channel 0 on the ADC. The Arduino was connected to the PC, the weight measurement program was run and a serial connection was established to see the output in the terminal. Once again, a bottle filled with different amounts water was placed on top of the load cell. The weight of the bottle measured by the scale and the weight measurement determined in code were both recorded. The measurement for the empty 66g bottle is shown in Figure \ref{fig:S7} below.
+	The ADC was connected to the Arduino as shown in Figure \ref{fig:S6} on the breadboard. The output from the voltage divider in Figure \ref{fig:S9} was connected to channel 0 on the ADC. The Arduino was connected to the PC, the weight measurement program was run and a serial connection was established to see the output in the terminal. Once again, a bottle filled with different amounts water was placed on top of the load cell. The weight of the bottle measured by the scale and the weight measurement determined in code were both recorded. The measurement for the empty 66g bottle is shown in Figure \ref{fig:S17} below.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.6\linewidth]{Figures/Weight Measurement.png}
@@ -276,25 +277,69 @@
 	 
 	\section{Results and Discussion}
 	\subsection{Load Cell and Amplifier test}
-	The plot of the output voltage w.r.t. GND and "Virtual GND" against the input voltage from the oscilloscope can be found in Figure \ref{fig:S11} in Appendix A4. The plot of the output voltage against the weight is shown in Figure \ref{fig:S12} below. It can be seen that the output voltage has linear response with the weight. 
+	 The plot of the output voltage against the weight is shown in Figure \ref{fig:S18} below. It can be seen that the output voltage has linear response with the weight. 
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.4\linewidth]{Figures/Result2.png}
 		\caption{Plot of the output voltage against the weight}
-		\label{fig:S12}
+		\label{fig:S18}
 	\end{figure}
 	
-	\subsection{Load Cell and Amplifier test}
-	The plot of the output voltage w.r.t. GND and "Virtual GND" against the input voltage from the oscilloscope can be found in Figure \ref{fig:S11} in Appendix A4. The plot of the output voltage against the weight is shown in Figure \ref{fig:S12} below. It can be seen that the output voltage has linear response with the weight. 
+	\subsection{Weight Measurement Test}
+	Table \ref{tab:S6} below shows the measured weight of the bottle against its actual weight.
+		\begin{table}[h!]
+		\centering
+		\caption{Table on Weight Measurements from Arduino}
+		\begin{tabularx}{0.8\textwidth} { 
+				| >{\centering\arraybackslash}X 
+				| >{\centering\arraybackslash}X |}
+			\hline
+			\textbf{Actual Weight   {[}g{]}} & \textbf{Measured   Weight {[}g{]}} \\ \hline
+			66                               & 57.3                               \\ \hline
+			191                              & 111.5                              \\ \hline
+			301                              & 160.0                              \\ \hline
+			400                              & 202.8                              \\ \hline
+			484                              & 239.7                              \\ \hline
+			622                              & 299.9                              \\ \hline
+			725                              & 345.0                              \\ \hline
+			805                              & 379.7                              \\ \hline
+		\end{tabularx}
+		\label{tab:S6}
+	\end{table} \\
 	
+	\subsection{Tare Function Test}
+	The output in the terminal when the button is pressed is shown figure \ref{fig:S19} below.
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[width=0.4\linewidth]{Figures/Result2.png}
-		\caption{Plot of the output voltage against the weight}
-		\label{fig:S12}
+		\includegraphics[width=0.6\linewidth]{Figures/Tare Test.png}
+		\caption{Image of load cell and amplifier test}
+		\label{fig:S19}
 	\end{figure}
 	
-	% ----------------------------------------------------
+	\subsection{Acceptance Test Results}
+	Table \ref{tab:S7} shows the results of the different acceptance tests.
+	\begin{longtable}[c]{|p{.25\textwidth}|p{.4\textwidth}|p{.15\textwidth}|}
+		\caption{Acceptance Test Procedures}
+		\label{tab:S7}\\
+		\hline
+		\textbf{Specification   no.} & \textbf{Acceptance   criterion}                                                                                                                                                            & Result                                                                                                                      \\ \hline
+		\endfirsthead
+		%
+		\endhead
+		%
+		SS1                          & Soldered   circuit can fit in 100x100x50mm box.                                                                                                                                            & Failed to   test. Did not solder                                                                                            \\ \hline
+		SS2                          & Less than   30mA is drawn from a 6.6V supply.                                                                                                                                              &                                                                                                                             \\ \hline
+		SS3                          & Load cell   operates normally while under a 750g load or heavier.                                                                                                                          & Passed                                                                                                                      \\ \hline
+		SS4                          & A linear   response in the output voltage is observed.                                                                                                                                     & Passed                                                                                                                      \\ \hline
+		SS5                          & The   microcontroller outputs a weight measurement in the terminal.                                                                                                                        & Passed                                                                                                                      \\ \hline
+		SS6 \& SS7                   & The outputted   weight from the terminal must match the given the weight to within 0.1g.                                                                                                   & Failed                                                                                                                      \\ \hline
+		SS8                          & The   microcontroller detects when push button is pressed                                                                                                                                  & Passed                                                                                                                      \\ \hline
+		SS9                          & When the   button is pressed once, the outputted weights have been offset by the weight   measured when the button was pressed. When the button is pressed twice, the   offset is removed. & Failed.   The offset is not correct. Could be due to some precision errors in the way   the Arduino handles floating point. \\ \hline
+		SS10                         & The LED is   toggled on and off with each button press.                                                                                                                                    & Passed.                                                                                                                     \\ \hline
+		SS11                         & The Arduino   and external circuitry operate off of 6.6V                                                                                                                                   & Passed.                                                                                                                     \\ \hline
+	\end{longtable}
+	
+	 ----------------------------------------------------
 	\ifstandalone
 	\bibliography{../Bibliography/References.bib}
 	\printnoidxglossary[type=\acronymtype,nonumberlist]

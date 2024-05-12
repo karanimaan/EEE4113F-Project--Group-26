@@ -13,34 +13,31 @@
 	% ----------------------------------------------------
 	
 	\section{Introduction}
-	This chapter deals with the user interface of the system. The user interface is how the client will be able to make use of the system.
+		The user interface is how the client will be able to make use of the system. %The client has the 
+		The goal of this subsystem is to use wireless technology to allow the client to capture the weight of the monitored birds remotely.
 	
 	\section{Requirements}
+		
+		This subsystem uses a micro-controller to send the data to a mobile device. It uses an application on the mobile device to receive the data. The application has a Graphical User Interface (GUI) to save the weight, the bird's ID, and the time of recording. All the data is saved in a format that can be opened in a spreadsheet. % This is displayed in the following table.
 	
 		\subsection{User Requirements}
 		\begin{enumerate}
-			\item Display weight data on app.
-			\item App must have interface for manual data.
-			\item Other data should be automated (time, location).
-			\item Data must be saved to a spreadsheet. It should have the following fields: FID, Date, Time, ID, Ring type, Sex, Mass, Day status, Day status, Day, Weekday, Term, Name, Weight Session, Location, Notes, People Count 1, People Count 2.
-			
+			\item The weight reading must be displayed on phone.
+			\item The mobile must have interface for manual data.
+			\item The weight, the bird's ID, and the time of recording must be recorded.
+			\item Records must be saved to a spreadsheet.
 		\end{enumerate}
 		
 		\subsection{Functional Requirements}
-		\begin{enumerate}
-			\item Establish connection between smart scale (Arduino) and phone (via Bluetooth or Wi-Fi) 
-			\item The GUI should have a text box to input the bird's ID.
-			\item A CSV file needs to be created where the data will be written.
-		\end{enumerate}
+			\begin{enumerate}
+				\item Scale must be able to send data to the phone.
+				\item The GUI should have a text box to input the bird's ID.
+				\item A CSV file needs to be created where the data will be written.
+			\end{enumerate}
 			
-			
-		
-	
-		
 	
 	\section{Design Choices}
 		
-	
 		\subsection{Sending readings}
 		There are several technologies to transmit data such as: Wi-Fi, and Bluetooth. 
 		Wi-Fi has the benefit of conneting to the internet. It requires minimal effort on the user's end if they are already connected to the internet . However, internet access is not feasible as weighing sessions span outside of \textit{eduroam} coverage.
@@ -62,10 +59,9 @@
 		
 		\subsection{Graphical User Interface}
 		A mobile app needed to be developed to receive and record the data. The client uses an Android device; therefore, an the app was developed for Android devices. The official native programming language is Java. Kotlin is a newer language, that Google will be giving more support to than Java, going forward \cite{kotlin}. In addition, Kotlin has more concise and safer code. It has less boilerplate and it has many language features to avoid common programming mistakes, such as null safety \cite{kotlin}.
+		This it would mean this program would be easier to maintain for newer Android devices in the future and it would be less error prone. Therefore, Kotlin was chosen as the programming language.
 		
-		For these reasons Kotlin was chosen since it would mean this program would be easier to maintain for newer Android devices in the future and it would be less error prone.
-		
-		Its UI App Development Toolkit, Jetpack Compose, was used to develop the GUI for the app. This was used instead of XML (Extended Markup Language), since it is more concise than XML, and is officially supported by Google.
+		Kotlin's UI App Development Toolkit, Jetpack Compose, was used to develop the GUI for the app. This was used instead of XML (Extended Markup Language), since it is more concise than XML, and is officially supported by Google.
 			
 		
 		\subsection{Saving data}
@@ -74,13 +70,14 @@
 	
 	\section{Subsystem Design}
 		
+		This subsystem exists in two environments: the Arduino, and the mobile device. The Arduino was programmed to send the weight readings to the mobile device. A mobile app was developed to receive the weight readings. The app has a GUI for the user to input the bird's ID and save the data to a spreadsheet for the user to view. A block diagram of the subsystem is shown in figure \ref{fig:block-diagram}
+		
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[width=0.9\linewidth]{Figures/Starling data block diagram.pdf}
 			\caption{Block diagram of subsystem}
+			\label{fig:block-diagram}
 		\end{figure}
-		
-		This subsystem exists in two environments: the Arduino, and the mobile device. The Arduino needs to be programmed to send the weight readings to the mobile device. A mobile app needs to be developed to receive the weight readings. The app needs to provide a GUI that allows the user to input the bird's ID. The app should save the data to a spreadsheet for the user to view.
 		
 	
 		\subsection{Sending data}
@@ -104,10 +101,7 @@
 		%\subsection{Reading data}
 		
 		
-		\subsection{Mobile app}
-		
-			
-			https://github.com/karanimaan/EEE4113F-Project--Group-26/tree/main/Mobile%20App
+		\subsection{Graphical User Interface}
 			
 			The Graphical User Interface (GUI) is responsible for displaying the live reading coming from the Arduino, and allowing the user to capture that reading and input the bird ID. The GUI also needs a save button to save the data to a file, so that the user can view the data in a spreadsheet.
 			The prototype of the GUI is shown below in figure \ref{fig:gui-prototype}.
@@ -119,54 +113,67 @@
 				\label{fig:gui-prototype}
 			\end{figure}
 		
-			Firstly, a column (vertical layout) is created. Within it, the components are created. A screenshot of the GUI on startup is shown below in figure \ref{label}.
-		
-		
-		
-		\subsection{Saving data}
+			In the final GUI design, the bird mass reading was made editable so that the bird mass could be manually entered if needed.
+			In the process of development, it was found that the saved data is stored in a directory inaccessible to the user. Therefore, an "export data" button was added to export the data to a directory accessible to the user. Additionally, a "clear data" button was added, so that user has a means of deleting the data, once exported. 
+			Figure \ref{fig:screenshots-of-mobile-app} shows how the GUI looks like.
+			%Figure \ref{fig:screenshots-of-mobile-app} shows how the final GUI design is used.
 			
 			
-			\begin{figure}
-				\centering
-				\includegraphics[width=\linewidth]{Figures/exported_data}
-				\caption{}
-				\label{fig:exporteddata}
-			\end{figure}
+			
+			
+			The application can be installed using the APK file, \href{}{app-debug.apk}, found in the repository under  \textit{BirdApp/app/build/outputs/apk/debug}. The code can be found in \href{https://github.com/karanimaan/EEE4113F-Project--Group-26/blob/main/BirdApp/app/src/main/java/com/example/BirdApp/MainActivity.kt}{MainActivity.kt}, which can be found under \textit{BirdApp/app/src/main/java/com/example/BirdApp}.
 		
-		The spreadsheet should have the following fields: FID, Date, Time, ID, Ring type, Sex, Mass, Day status, Day status, Day (of week), Weekday, Term, Name, Weighing Session, Location, Notes, People Count 1, People Count 2.
 		
-		FID - pk
-		Date, Time, Day, Weekday, Weighing Session, Location - Kotlin
-		ID, Day status, Name, Notes, People Count 1, People Count 2 - user
-		Ring type, Sex - BirdID table
-		Mass - Arduino
-		Term - Terms table
-		
-	
-	%\section{Final Design}
-	
-	%\section{Testing}
-	\section{Acceptance Test Procedure}
-	Testing was done on a Samsung S9 phone running Android 10.
-	\section{Unit Testing}
+		\subsection{Exporting data}
+			
+			The data is written to "exported\_data.csv" in the "/Android/data/com.example.myapplication/files/" directory. This is the only directory that can be written to from Android 10 and later.
+			
+			
+			
+
+
+	\section{Testing}
 		
 		\subsection{Sending data}
-		For the purpose of unit testing, the weight value was hard-coded to $346.2$.
-		\textit{LightBlue}, a mobile app, was used to test the Arduino sending data. Screenshots of the process are shown below in figure \ref{fig:screenshots-of-testing-ble-posting}.
+			For the purpose of unit testing, the weight value was hard-coded to $346.2$.
+			\textit{LightBlue} \cite{lightblue}, a mobile app, was used to test the Arduino sending data. Screenshots of the process are shown below in figure \ref{fig:screenshots-of-testing-ble-posting}.
+			
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[width=\linewidth]{"Figures/Screenshots of testing BLE posting.drawio"}
+				\caption{Testing the Arduino sending data}
+				\label{fig:screenshots-of-testing-ble-posting}
+			\end{figure}
 		
-		\begin{figure}[h!]
-			\centering
-			\includegraphics[width=1.2\linewidth]{"Figures/Screenshots of testing BLE posting"}
-			\caption{Testing the Arduino sending data}
-			\label{fig:screenshots-of-testing-ble-posting}
-		\end{figure}
+			On the homepage, a list of devices is displayed. The device "Arduino Nano 33 IoT" was connected to. The service was selected and the characteristic was read. The data format "UTF-8 String" was selected, and the weight reading was displayed. This reading corresponded with the hard-coded value in \href{https://github.com/karanimaan/EEE4113F-Project--Group-26/blob/main/send_data/send_data.ino}{send\_data.ino}.
+		
+		\subsection{Graphical User Interface}
+			The app was tested on a Samsung S9 phone running Android 10.
+			The functionality of the buttons in the application were tested. Screenshots of the testing process are shown in figure \ref{fig:screenshots-of-mobile-app}.
+			
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[width=\linewidth]{"Figures/Screenshots of Mobile App.drawio"}
+				\caption{Screenshots of Mobile App}
+				\label{fig:screenshots-of-mobile-app}
+			\end{figure}
+			
+			Firstly, the "Capture reading" button was pressed. This filled in the "Bird mass" text box with the live reading successfully, as shown in figure \ref{fig:screenshots-of-mobile-app} (b). After filling the "Bird ID" text box, the "Save data" button was pressed. This created an FID to uniquely identify each record. The FID, date, time, bird ID, and weight were recorded and displayed, as shown in figure \ref{fig:screenshots-of-mobile-app} (c). The "Export data" button was pressed, which exported the data, and notified that the export was successful, as shown in figure \ref{fig:screenshots-of-mobile-app} (d).  
+				
+		\subsection{Exporting data}
+			Another record was made, as shown in figure \ref{fig:screenshots-of-mobile-app} (e), before exporting again. Samsung's native file explorer was used to navigate to the "/Android/data/com.example.myapplication/files/" directory where the	"exported\_data.csv" file was found. The file was opened in Google Sheets, where it was displayed as a spreadsheet, as shown in figure \ref{fig:exported-data}. The exported data corresponded with the saved data displayed in figure \ref{fig:screenshots-of-mobile-app} (e).
+		
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[width=0.7\linewidth]{"Figures/Exported Data"}
+				\caption{Screenshot of Exported Data}
+				\label{fig:exported-data}
+			\end{figure}
+			
 	
-		On the homepage, a list of devices is displayed. The device "Arduino Nano 33 IoT" was connected to. The service was selected and the characteristic was read. The data format "UTF-8 String" was selected, and the weight reading was displayed. This reading corresponded with the hard-coded value in \href{https://github.com/karanimaan/EEE4113F-Project--Group-26/blob/main/send_data/send_data.ino}{send\_data.ino}.
+	%\subsection{User Acceptance Testing}
+	
 
-	
-	\subsection{User Acceptance Testing}
-	
-	\section{Conclusion}
 	
 	% ----------------------------------------------------
 	\ifstandalone
