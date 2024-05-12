@@ -10,7 +10,7 @@
 	\vspace{0.5cm}
 	% ------------------------------------------
 	\section{Introduction}
-	The power subsystem is one of the most important subsystems in this design with respect to its functionality. This subsystem is responsible for powering up the micro-controller (MCU) and the sensor. It is very important for the design to have a reliable and safe power supply unit (PSU). This section outlines how the power supply unit design is divided into smaller sections, all with different responsibilities, requirements and specifications, but with the same goal: to achieve a reliable power supply source. The design uses a battery as its primary source of power. The subsection includes sections such as battery charging, overload protection, reverse polarity and a voltage regulation system. Designed were two circuits which work together to complete the whole PSU. First circuit is for battery charging, encapsulated with protection, then the voltage regulation circuit. As abovementioned, the PSU's goal is to provide a reliable power source to the micro-controller for more efficient performance. 
+	The power subsystem is one of the most important subsystems in this design with respect to its functionality. This subsystem is responsible for powering up the micro-controller (MCU) and the sensor. It is very important for the design to have a reliable and safe power supply unit (PSU). This section outlines how the power supply unit design is divided into smaller sections, all with different responsibilities, requirements and specifications, but with the same goal: to achieve a reliable power supply source. The design uses a battery as its primary source of power. The subsection includes sections such as battery charging, overload protection, reverse polarity and a voltage regulation system. Designed were two circuits which work together to complete the whole PSU. First circuit is for battery charging, encapsulated with protection, then the voltage regulation circuit. As above-mentioned, the PSU's goal is to provide a reliable power source to the micro-controller for more efficient performance. 
 	
 	\subsection{System overview}
 	
@@ -18,35 +18,48 @@
 	
 		\begin{figure}[h!]
 		\centering
-		\includegraphics[width=0.5\linewidth]{Figures/flow diagram.jpg}
+		\includegraphics[width=1.2\linewidth]{Figures/flow diagram.jpg}
 		\caption{System overview}
 		\label{fig:P1}
 		\end{figure}
 	
-	\section{Requirements}
-	\subsection{Functional Requirements}
-	\subsection{Non-Functional Requirements}
-	\vspace{0.5cm}
+	
+
 	\section{Specifications}
+	\subsection{Non-Functional Specifications}
 	
-	%insert table of 18650 Specifications
-	
-	\subsection{Functional Specification}
-	\subsection{Non-Functional Specification}
+	\begin{table}[h!]
+		\centering
+		\caption{Non-Functional Specifications for Power Subsystem}
+		\label{tab:P2}
+		\begin{tabularx}{0.9\textwidth}{ 
+				| >{\centering\arraybackslash}m 
+				| >{\centering\arraybackslash}b 
+				| >{\centering\arraybackslash}s |}
+			\hline
+			\textbf{No.}                                   & \textbf{Description}                                                                                                             & \textbf{Acceptance criteria} \\ \hline
+			PS1               & Charging compatibility                                                  & The PSU must have a charging system that is easy and compatible to common charging power sources.                         \\ \hline
+			& PS2             & Safety                             & The PSU must be designed in such a way that it provides safety to the users (Sally and and birds), as well as safety to the components used.                        \\ \hline
+			& PS3             & Physical Size                                               & The Power supply unit should relatively take less space in the whole design not to scare away the birds.                         \\ \hline
+			
+		\end{tabularx}
+	\end{table}
+	\subsection{Functional Specifications}
 	
 	\section{Design}
 	\subsection{Battery charging}
 	\vspace{0.5cm}
-	Lithium-ion batteries are rechargeable,  The charging circuit should have a stable power supply. This supply can be achieved  by using a wall adapter, USB port, or another power source, such as a power bank. The charging circuit of the 18650 Li-ion batteries uses a BC745 PNP transistor as the driver of the circuit. The circuit diagram is shown below. The circuit takes in a voltage of between 8V - 5V. This circuit is designed to charge one battery at a time, making it more efficient and reliable. The charging circuit has two LED indicators. These LEDs are designed to indicate the level of the battery power when it is plugged to the charger. When the voltage is low, i.e the battery power is low, the RED LED will be much brighter than the GREEN LED. When the voltage now approaches the maximum voltage of 4.2V (actual voltage on a 3.7V Li-ion battery), the green LED dominates the RED and the user can know that the battery is charged. This is a sample and cost effective way to monitor the charging process of the batteries.  
+	Lithium-ion batteries are rechargeable,  The charging circuit should have a stable power supply. This supply can be achieved  by using a wall adapter, USB port, or another power source, such as a power bank. The charging circuit of the 18650 Li-ion batteries uses a BC745 transistor as the driver of the circuit. The circuit diagram is shown below. The circuit takes in a voltage of between 8V - 5V. This circuit is designed to charge one battery at a time, making it more efficient and reliable. The charging circuit has two LED indicators. These LEDs are designed to indicate the level of the battery power when it is plugged to the charger. When the voltage is low, i.e the battery power is low, the RED LED will be much brighter than the GREEN LED. When the voltage now approaches the maximum voltage of 4.2V (actual voltage on a 3.7V Li-ion battery), the green LED dominates the RED and the user can know that the battery is charged. This is a sample and cost effective way to monitor the charging process of the batteries.
+	
+	 Although the circuit uses two batteries, the design is usch that Sally can only charge one battery at a time. 
 	
 		\begin{figure}[h!]
 		\centering
-		\includegraphics[width=0.5\linewidth]{Figures/Charging.jpg}
+		\includegraphics[width=0.9\linewidth]{Figures/Charging.jpg}
 		\caption{Charging circuit}
 		\label{fig:P1}
 	\end{figure}
 	\vspace{0.5cm}
-	
 	
 
 	\subsection{Protection circuitry}
@@ -62,7 +75,7 @@
 	
 		\begin{figure}[h!]
 		\centering
-		\includegraphics[width=0.5\linewidth]{Figures/Overload protection.jpg}
+		\includegraphics[width=0.9\linewidth]{Figures/Overload protection.jpg}
 		\caption{Circuit Schematic of Overload protection}
 		\label{fig:P2}
 		\end{figure}
@@ -73,23 +86,38 @@
 	
 		\begin{figure}[h!]
 		\centering
-		\includegraphics[width=0.5\linewidth]{Figures/ReverseVoltageCircuit.jpg}
+		\includegraphics[width=0.9\linewidth]{Figures/ReverseVoltageCircuit.jpg}
 		\caption{Circuit Schematic of Under-voltage protection}
 		\label{fig:P3}
 		\end{figure}
 	
-	The circuit above shows a voltage divider which divides the battery voltage by a factor of 10. When the battery voltage reaches 3V, the circuit cuts off and isolates the battery from the entirely.
+	The circuit above shows a voltage divider which divides the battery voltage by a factor of 10. When the batteries' voltage reaches 6V, the circuit cuts off and isolates the battery from the circuit entirely.
 	
 	\subsubsection{Reverse polarity protection}
 	\vspace{0.5cm}
 
 	The battery is safeguarded against reverse polarity by employing the a Schottky diode 1N5819. This diode is renowned for its efficacy by having a minimal forward voltage drop of 0.2-0.3V. In the event of reversed battery polarity, the voltage potential at the anode of the diode will be lower than that at the cathode, effectively preventing current flow and thereby shutting the circuit down. No power will be drawn back to the battery, further preserving the battery's lifespan and increasing its reliability. Please see diode's specifications below.
 	
-	%%instert table of speofications of 1N5819
+	%%instert table of specifications of 1N5819
 	
 	\subsection{Voltage regulation}
+	
+	
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.9\linewidth]{Figures/regulator.jpg}
+		\caption{Charging circuit}
+		\label{fig: P1}
+	\end{figure}
+	
+	
+	\subsection{Battery power level monitoring}
+	
+	\section{Acceptable Test Procedure}
+	
 	\section{Testing and Results}
-	\section{Final design}
+	
 	\section{Conclusion and Recommendations}
 	
 \end{document}
