@@ -1,0 +1,29 @@
+% ----------------------------------------------------
+% Appendix A6
+% ----------------------------------------------------
+\documentclass[class=report,11pt,crop=false]{standalone}
+\input{../Style/ChapterStyle.tex}
+\input{../FrontMatter/Glossary.tex}
+\begin{document}
+	% ----------------------------------------------------
+	\chapter{Appendix A6}
+	\section{GA Table: VSTMIC004}
+	\begin{table}
+		\centering
+		\caption{GA Table for VSTMIC004}
+		\begin{tabular}{1111}
+			\textbf{Housing Subsystem}                              & \textbf{Where met}                                                    \\
+			GA 3: Engineering Design                                & Sections 3 and 6                                                      \\
+			GA 7: Sustainability and Impact of Engineering Activity & Section 6                                                             \\
+			GA 8: Individual, Team and Multi-Disciplinary Working   & See Teams group for meeting minutes                                   \\
+			GA 10: Engineering Professionalism                      & All submission activities met including final report and presentation 
+		\end{tabular}
+		
+	\end{table}
+	% ----------------------------------------------------
+	\ifstandalone
+	\bibliography{../Bibliography/References.bib}
+	\printnoidxglossary[type=\acronymtype,nonumberlist]
+	\fi
+\end{document}
+% ----------------------------------------------------
