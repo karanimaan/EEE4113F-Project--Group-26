@@ -29,20 +29,16 @@
 				\centering
 				\caption{Non-Functional Specifications for Power Subsystem}
 				\label{tab:P1}
-				\begin{tabularx}{0.8\textwidth}{|>{\centering\arraybackslash}m{0.1\linewidth}|>{\centering\arraybackslash}m{0.4\linewidth}|>{\centering\arraybackslash}m{0.3\linewidth}|}
-					\hline
-					\textbf{No.} & \textbf{Description} & \textbf{Acceptance criteria} \\
-					\hline
-					PS1 & Charging compatibility & The PSU must have a charging system that is easy and compatible with common charging power sources. \\
-					\hline
-					PS2 & Safety & The PSU must be designed to provide safety to the users (Sally and birds), as well as safety to the components used. \\
-					\hline
-					PS3 & Physical Size & The power supply unit should relatively take up less space in the whole design not to scare away the birds. \\
-					\hline
-					PS4 & Battery monitoring & The user must be able to easily monitor the battery life of the design. \\
-					\hline
-				\end{tabularx}
-			\end{table}
+				\begin{tabularx}{0.8\textwidth}{|>{\centering\arraybackslash}m{0.1\linewidth}|>{\centering\arraybackslash}m{0.4\linewidth}|>{\c
+					\begin{table}[]
+						\begin{tabular}{lllll}
+							No  & Description            & Acceptance criteria                                                                                                 &  &  \\
+							PS1 & Charging compatibility & The PSU must have a charging system that is easy and compatible with common charging power sources.                 &  &  \\
+							PS2 & Safety                 & The PSU must be designed to provide safety to the users (Sally and birds), as well as safety to the components used &  &  \\
+							PS3 & Battery Monitoring     & he power supply unit should relatively take up less space in the whole design not to scare away the birds           &  & 
+						\end{tabular}
+					\end{table}
+					
 	\subsection{Functional Specifications}
 	\begin{table}[h!]
 		\centering
@@ -162,7 +158,7 @@
 			ATP10 & Compatibility & The power supply unit should be able to get supply from different types of power sources. & \textbf{PASSE
 				
 	\section{Testing and Results}
-	The circuit below follows the design outlined following the LED charging indicators. When the battery is fully charged, the Green LED will be more dominant than the RED LED. This simple LED indicator will assist in 
+	The circuit below follows the design outlined following the LED charging indicators. When the battery is fully charged, the Green LED will be more dominant than the RED LED. This simple LED indicator will assist in monitoring the charging of the batteries.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.5\linewidth]{Figures/Battery chargerG.jpg}
@@ -185,7 +181,7 @@
 	Overload and under-load protection
 		\begin{figure}[h!]
 		\centering
-		\includegraphics[width=0.6\linewidth]{Figures/OverloadAndUnderloadProtection.jpg}
+		\includegraphics[width=0.5\linewidth]{Figures/OverloadAndUnderloadProtection.jpg}
 		\caption{Charging circuit}
 		\label{fig: P8}
 	\end{figure}
