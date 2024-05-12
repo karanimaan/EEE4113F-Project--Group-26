@@ -228,15 +228,14 @@
 	If "SIZE" is set to 10, the "values" array is a circular buffer that stores last 10 weight measurements, along with the sum of the whole array. The index increases incrementally with each new measurement and wraps back around to 0 once it goes past 9. This means that the latest value is stored at position 'index' within the array, while the value one position ahead of it is the oldest. When a new value is added to the array, it is added to the sum while the oldest value is removed from the sum. The sum divided is subsequently by "SIZE" or 10 and that is the average that gets returned. By storing the sum in memory it removes the need to add up all the values in the array with every new measurement, making the program run more efficiently.
 	
 	\subsection{Tare Functionality}
-	The tare function was implemented using an interrupt tied to the input of a push button. The button is made active low by connecting an internal pull up resistor in code. The interrupt is set to trigger whenever there is a falling edge from the button, which occurs when it is initially pressed. The corresponding Interupt Service Routine (ISR) toggles the LED when this occurs as shown in Figure {fig:S16} below. Within the main loop the change in the LED state is detected and the current weight is stored is added to an offset value. When the LED is toggled ON, all subsequent measurement will now be the difference between the weight and this offset, unless the offset is larger, in which it is just 0.
-	
-	When a button is pressed it does not close shut immediately. Instead its contacts bounce off one another many times within a split second, resulting in the microcontroller reading multiple inputs from one button press. Hence a delay of 250ms is added to allow the button to settle before taking input from it again.  
+	The tare function was implemented using an interrupt tied to the input of a push button. The button is made active low by connecting an internal pull up resistor in code. The interrupt is set to trigger whenever there is a falling edge from the button, which occurs when it is initially pressed. The corresponding Interupt Service Routine (ISR) toggles the LED when this occurs as shown in Figure\ref{fig:S16} below. Within the main loop the change in the LED state is detected and the current weight is stored is added to an offset value. When the LED is toggled ON, all subsequent measurement will now be the difference between the weight and this offset, unless the offset is larger, in which it is just 0.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.7\linewidth]{Figures/ButtonPressed.png}
 		\caption{Code Snippet of Interrupt Service Routine for push button}
 		\label{fig:S16}
-	\end{figure}
+	\end{figure}\\
+	When a button is pressed it does not close shut immediately. Instead its contacts bounce off one another many times within a split second, resulting in the microcontroller reading multiple inputs from one button press. Hence a delay of 250ms is added to allow the button to settle before taking input from it again. 
 	
 	\section{Acceptance Test Procedure (ATP)}
 	\subsection{Load Cell and Amplifier tests}
