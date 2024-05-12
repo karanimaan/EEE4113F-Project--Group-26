@@ -11,6 +11,7 @@
 	% ---------------------------------------------------
 	\section{Introduction}
 	The aim of this subsection is to discuss the design and implementation of the housing of the final design. This housing will physically contain and protect all other subsystems as well as facilitate their operation.
+	
 	\section{Requirement Analysis}
 	
 	\begin{table}[h!]
@@ -22,11 +23,11 @@
 				| >{\centering\arraybackslash}b 
 				| >{\centering\arraybackslash}s |}
 			\hline
-			\textbf{User   Requirement} & \textbf{Specification   Description}                                     & \textbf{Specification   no.} \\ \hline
-			Portable                    & The final internal size of the design must be 100x100x50mm 			   & HS1                          \\ \hline
-			Weight Capacity        & The final design must be able to support the weight of all other subsystems including the maximum weight of the scale. & HS2 \\ \hline
-			Weight Distribution & The final design must be able to contain all other subsystems in such a way that the overall center of gravity of the final design sits in the middle of the housing subsystem & HS3 \\ \hline
-			External Push Button & The housing must support an external push button that can directly interface with the tare function developed in the Sensing Subsection & HS4 \\ \hline
+			\textbf{User   Requirement} & \textbf{Specification   Description}                                                                                                                                           & \textbf{Specification   no.} \\ \hline
+			Portable                    & The final internal size of the design must be 100x100x50mm                                                                                                                     & HS1                          \\ \hline
+			Weight Capacity             & The final design must be able to support the weight of all other subsystems including the maximum weight of the scale.                                                         & HS2                          \\ \hline
+			Weight Distribution         & The final design must be able to contain all other subsystems in such a way that the overall center of gravity of the final design sits in the middle of the housing subsystem & HS3                          \\ \hline
+			External Push Button        & The housing must support an external push button that can directly interface with the tare function developed in the Sensing Subsection                                        & HS4                          \\ \hline
 		\end{tabularx}
 	\end{table}
 
@@ -50,13 +51,13 @@ As emphasized during the literature review, material choice is a component that 
 			| >{\centering\arraybackslash}b 
 			| >{\centering\arraybackslash}s |}
 		\hline
-		\textbf{Material   Requirement} & \textbf{Requirement   Description}                                     & \textbf{Requirement   no.} \\ \hline
-		Avian-safe                   & The materials used should not be toxic in any way towards avian species. The materials used should not have any sharp edges or corners that can harm avians that will be interacting with the final design.			   & HSM1 \\ \hline
-		User-safe        & The materials used should not be toxic in any to the users that will interact with the final design. The materials used should not have any sharp edges or corners that can harm users that will interact with the final design. & HSM2 \\ \hline
-		Density Consistency & The materials chosen should be evenly dense such that the center of gravity of the final housing design lies equidistant between all edges of the outer section & HSM3 \\ \hline
-		Ease of Modularity & The materials chosen must be easy to modify (either permanent or temporary modifications) by both the designers of the subsection and end users. & HSM4 \\ \hline
-		Environmental Resistance & The materials chosen should be able to resist damage from water and sunlight such that, even if prolonged for long periods of time, the functionality of every subsection (including this one) remains unaffected. & HSM5 \\ \hline
-		Budget Constraint & The total cost of all the materials require should fall within the budget for the entire subsection (R450) & HSM6 \\ \hline 
+		\textbf{Material   Requirement} & \textbf{Requirement   Description}                                                                                                                                                                                               & \textbf{Requirement   no.} \\ \hline
+		Avian-safe                      & The materials used should not be toxic in any way towards avian species. The materials used should not have any sharp edges or corners that can harm avians that will be interacting with the final design.                      & HSM1                       \\ \hline
+		User-safe                       & The materials used should not be toxic in any to the users that will interact with the final design. The materials used should not have any sharp edges or corners that can harm users that will interact with the final design. & HSM2                       \\ \hline
+		Density Consistency             & The materials chosen should be evenly dense such that the center of gravity of the final housing design lies equidistant between all edges of the outer section                                                                  & HSM3                       \\ \hline
+		Ease of Modularity              & The materials chosen must be easy to modify (either permanent or temporary modifications) by both the designers of the subsection and end users.                                                                                 & HSM4                       \\ \hline
+		Environmental Resistance        & The materials chosen should be able to resist damage from water and sunlight such that, even if prolonged for long periods of time, the functionality of every subsection (including this one) remains unaffected.               & HSM5                       \\ \hline
+		Budget Constraint               & The total cost of all the materials require should fall within the budget for the entire subsection (R450)                                                                                                                       & HSM6                       \\ \hline
 	\end{tabularx}
 \end{table}
 
@@ -74,12 +75,12 @@ Taking into account all viable materials available at local hardware stores, the
 			| >{\centering\arraybackslash}x 
 			| >{\centering\arraybackslash}s |}
 		\hline
-		\textbf{Product Type} & \textbf{BuCo SKU}  & \textbf{Requirements Fulfilled} & \textbf{Requirement Discussion} \\ \hline
-		Plywood & 1274706 & HSM1,HSM2,HSM3,HSM4, HSM5, HSM6 & Fulfills all material requirements \\ \hline
-		Hardboard & 1292581 & HSM1, HSM2, HSM3, HSM4, HSM6 & Does not fulfill the HSM5 requirement as it has little moisture resistance. \\ \hline
-		Chipboard & 1283947 & HSM1, HSM2, HSM3, HSM6 & Does not fulfill the HSM4 requirement as it cannot be altered easily without the use of adhesives, which will compromise the structural integrity of the housing design. It also does not meet the HSM5 requirement due to its tendency to chip and shatter over time. \\ \hline
-		SupaWood & 1276088 & HSM1,HSM2,HSM3,HSM4, HSM5, HSM6 & Fulfills all material requirements. \\ \hline
-		Laminated Pine Shelving & 1124588 & HSM1,HSM2,HSM3,HSM4, HSM5 & Does not fulfill the HSM6 requirement due to it being outside of the subsystem budget. \\ \hline
+		\textbf{Product Type}   & \textbf{BuCo SKU} & \textbf{Requirements Fulfilled} & \textbf{Requirement Discussion}                                                                                                                                                                                                                                        \\ \hline
+		Plywood                 & 1274706           & HSM1,HSM2,HSM3,HSM4, HSM5, HSM6 & Fulfills all material requirements                                                                                                                                                                                                                                     \\ \hline
+		Hardboard               & 1292581           & HSM1, HSM2, HSM3, HSM4, HSM6    & Does not fulfill the HSM5 requirement as it has little moisture resistance.                                                                                                                                                                                            \\ \hline
+		Chipboard               & 1283947           & HSM1, HSM2, HSM3, HSM6          & Does not fulfill the HSM4 requirement as it cannot be altered easily without the use of adhesives, which will compromise the structural integrity of the housing design. It also does not meet the HSM5 requirement due to its tendency to chip and shatter over time. \\ \hline
+		SupaWood                & 1276088           & HSM1,HSM2,HSM3,HSM4, HSM5, HSM6 & Fulfills all material requirements.                                                                                                                                                                                                                                    \\ \hline
+		Laminated Pine Shelving & 1124588           & HSM1,HSM2,HSM3,HSM4, HSM5       & Does not fulfill the HSM6 requirement due to it being outside of the subsystem budget.                                                                                                                                                                                 \\ \hline
 	\end{tabularx}`
 \end{table}
 
@@ -91,12 +92,11 @@ From the above list the two most viable materials, including their sizing and pr
 		| >{\centering\arraybackslash}m 
 		| >{\centering\arraybackslash}b 
 		| >{\centering\arraybackslash}s |}
-	\hline
-	\textbf{Product Type} & \textbf{Dimensions (mm)}  & \textbf{Pricing} \\ \hline
-	Plywood & 2440x1220x3.6 & R426.98 \\ \hline
-	SupaWood & 2750x1830x3 & R302. 02 \\ \hline 
-
-\end{tabularx}
+		\hline
+		\textbf{Product Type} & \textbf{Dimensions (mm)} & \textbf{Pricing} &  \\ \hline
+		Plywood               & 2440x1220x3.6            & R426.98          &  \\ \hline
+		SupaWood              & 2750x1830x3              & R302. 02         &  \\ \hline
+	\end{tabularx}
 \end{table}
 
 Taking into consideration the amount of raw material obtained for the price, SupaWood will be selected as the primary material of choice for both the outer and internal sections of the housing.
@@ -111,5 +111,5 @@ The outer section will be designed alongside the internal section of the housing
 	\fi
 	
 \end{document}
-
+% ----------------------------------------------------
 
